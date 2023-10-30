@@ -38,7 +38,6 @@ x = x + 2
 ```python
 
 # Criando uma função
-
 create function_name ( args ) : integer = {
   stdout : " Nothing here "
   return 0 
@@ -56,7 +55,7 @@ x = invoke : function_name( args )
 #### Conditional Block
 ```python
 
-if : ( x == 2) {
+if : ( x == 2) = {
   # If block
   stdout : " X é igual a 2" 
 } : {
@@ -82,15 +81,51 @@ loop : ( i < 5) = {
 
 ```python
 
-stdout  # Output
-stdin   # Input do teclado
+# Output
+stdout  : "Display in screen"
+
+# Input do teclado deve ser inteiro nesse exemplo
+declare x : integer
+stdin : x  
 
 ```
 
 ## 🎯️ EBNF
 
-```python
+```mysql
 
-PROGRAM = {}
+PROGRAM                 = {STATEMENT}
+STATEMENT               = "\n" , ASSIGMENT , STDOUT , STDIN , IF , LOOP , VARIABLES , CREATE , INVOKE
+
+BLOCK                   = "{" , STATEMENT ,  "}";
+FUNCTION_BLOCK          = "{" , STATEMENT ,  "return" ,  "set@special_identifier" , "}";
+
+
+BOOL_EXPRESSION         = BOOL_TERM , { "or", BOOL_TERM } ;
+BOOL_TERM               = RL_EXPRESSION , { "and", RL_EXPRESSION } ;
+RL_EXPRESSION           = EXPRESSION, { ("==" | ">" | "<"), EXPRESSION } ;
+
+
+EXPRESSION              = TERM, { ("+" | "-" | "."), TERM } ;
+TERM                    = FACTOR , { ("*" | "/"), FACTOR } ;
+FACTOR                  = Number | String | Identifier | (("+" | "-" | "!"), FACTOR) ;
+
+
+STDOUT                  = "stdout" , ":" , BOOL_EXPRESSION
+STDIN                   = "stdin"  , ":" , Identifier
+
+
+ASSIGMENT               = Identifier , "=" , BOOL_EXPRESSION 
+VARIABLES               = "declare" , "constant") , Identifier , ":" ,  ("integer" | "string") , (BOOL_EXPRESSION | λ)
+IF                      = "if" , ":" , "(" , BOOL_EXPRESSION , ")" , "=" , BLOCK , ":" , "BLOCK"
+LOOP                    = "loop" , ":" , "(" , BOOL_EXPRESSION , ")" , "=" , "{" , BLOCK , "}"
+CREATE                  = "create" ,  string ,  "(" , args , ")" ,  ":" ,  ("integer" | "string") , "=" , FUNCTION_BLOCK
+INVOKE                  = ( ("identifier" ,  "=") | λ) ,  "invoke" , ":" ,  string , "(" ,  "args" ,  ")"
+
+Identifier              = Letter, { Letter | Digit | "_" } ;
+Number                  = Digit, { Digit } ;
+String                  = `"`, { λ | Letter | Digit }, `"` ;
+Letter                  = ( a | ... | z | A | ... | Z ) ;
+Digit                   = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 
 ```
