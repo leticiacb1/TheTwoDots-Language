@@ -8,7 +8,7 @@ Linguagem que se inspira em várias linguagens de programação amplamente conhe
 
 Algumas linguagens que foram utilizadas de inspiração : Python , JavaScript , Java , C/C++/C#.
 
-Possíveis linguagens a serem mescladas e trazerem improvementes para a presente linguagem : Whitespace , brainfuck.
+Possíveis linguagens a serem mescladas e trazerem melhorias para a presente linguagem : Whitespace , brainfuck.
 
 ## 📌️ Examples of structures
 
@@ -88,3 +88,9 @@ stdin   # Input do teclado
 ```
 
 ## 🎯️ EBNF
+
+```python
+
+PROGRAM = {}
+
+```
