@@ -1,4 +1,4 @@
-# APS-LogComP
+## TheTwoDots Language
 
 ### Variable and Constants Declaration
 
@@ -43,7 +43,7 @@ x = invoke : function_name( args )
 
 ```
 
-### If/Else Block
+### Conditional Block
 ```python
 
 if : ( x == 2) {
