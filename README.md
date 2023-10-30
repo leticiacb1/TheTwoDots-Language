@@ -24,10 +24,22 @@ x = x + 2
 ### Create function
 
 ```python
-create function_name (agrs) : return integer = {
-  # Código aqui
+create function_name ( args ) : integer = {
+  stdout : " Nothing here "
   return 0 
 }
+
+```
+
+### Invoke function
+
+```python
+invoke : function_name( args )
+
+# Take return value of a function
+
+declare x : integer
+x = invoke : function_name( args )
 
 ```
 
@@ -48,8 +60,10 @@ if : ( x == 2) {
 
 ```python
 
-create loop : () = {
-  
+declare i : integer = 0
+
+loop : ( i < 5) = {
+  i  = i + 1
 }
 
 ```
