@@ -1,6 +1,6 @@
-## TheTwoDots Language
+## The TwoDots Language
 
-### Variable and Constants Declaration
+#### Variable and Constants Declaration
 
 ```python
 # Declarando variável
@@ -12,7 +12,7 @@ declare z : integer
 constant DELTA : double = 0.1
 
 ```
-### Math operations
+#### Math operations
 ```python
 
 declare x : integer = 2
@@ -21,7 +21,7 @@ x = x + 2
 
 ```
 
-### Create function
+#### Create function
 
 ```python
 create function_name ( args ) : integer = {
@@ -31,7 +31,7 @@ create function_name ( args ) : integer = {
 
 ```
 
-### Invoke function
+#### Invoke function
 
 ```python
 invoke : function_name( args )
@@ -43,7 +43,7 @@ x = invoke : function_name( args )
 
 ```
 
-### Conditional Block
+#### Conditional Block
 ```python
 
 if : ( x == 2) {
@@ -56,7 +56,7 @@ if : ( x == 2) {
 
 ```
 
-### Loops
+#### Loops
 
 ```python
 
@@ -68,7 +68,7 @@ loop : ( i < 5) = {
 
 ```
 
-### Build-in function
+#### Build-in function
 
 ```python
 
