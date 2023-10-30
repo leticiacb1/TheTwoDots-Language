@@ -1,4 +1,4 @@
-## 🐙 The TwoDots Language
+##  🐙️ TwoDots Language
 
 Bem-vindo ao emocionante mundo da programação simplificada e intuitiva com a linguagem "TwoDots". 
 
@@ -97,23 +97,16 @@ stdin : x
 PROGRAM                 = {STATEMENT}
 STATEMENT               = "\n" , ASSIGMENT , STDOUT , STDIN , IF , LOOP , VARIABLES , CREATE , INVOKE
 
-BLOCK                   = "{" , STATEMENT ,  "}";
-FUNCTION_BLOCK          = "{" , STATEMENT ,  "return" ,  "set@special_identifier" , "}";
-
-
 BOOL_EXPRESSION         = BOOL_TERM , { "or", BOOL_TERM } ;
 BOOL_TERM               = RL_EXPRESSION , { "and", RL_EXPRESSION } ;
 RL_EXPRESSION           = EXPRESSION, { ("==" | ">" | "<"), EXPRESSION } ;
-
 
 EXPRESSION              = TERM, { ("+" | "-" | "."), TERM } ;
 TERM                    = FACTOR , { ("*" | "/"), FACTOR } ;
 FACTOR                  = Number | String | Identifier | (("+" | "-" | "!"), FACTOR) ;
 
-
 STDOUT                  = "stdout" , ":" , BOOL_EXPRESSION
 STDIN                   = "stdin"  , ":" , Identifier
-
 
 ASSIGMENT               = Identifier , "=" , BOOL_EXPRESSION 
 VARIABLES               = "declare" , "constant") , Identifier , ":" ,  ("integer" | "string") , (BOOL_EXPRESSION | λ)
@@ -121,6 +114,9 @@ IF                      = "if" , ":" , "(" , BOOL_EXPRESSION , ")" , "=" , BLOCK
 LOOP                    = "loop" , ":" , "(" , BOOL_EXPRESSION , ")" , "=" , "{" , BLOCK , "}"
 CREATE                  = "create" ,  string ,  "(" , args , ")" ,  ":" ,  ("integer" | "string") , "=" , FUNCTION_BLOCK
 INVOKE                  = ( ("identifier" ,  "=") | λ) ,  "invoke" , ":" ,  string , "(" ,  "args" ,  ")"
+
+BLOCK                   = "{" , STATEMENT ,  "}";
+FUNCTION_BLOCK          = "{" , STATEMENT ,  "return" ,  "set@special_identifier" , "}";
 
 Identifier              = Letter, { Letter | Digit | "_" } ;
 Number                  = Digit, { Digit } ;
