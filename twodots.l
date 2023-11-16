@@ -14,6 +14,10 @@ identifier          [A-z_][0-9A-z_]+
 
 /* ------- Return token types ------- */
 
+/* Space - Tabs */
+[ \t\n]         ;
+
+/* Special tokens */
 {numbers}       {return (NUMBER);}
 {identifier}    {return (IDENTIFIER);}
 
@@ -60,4 +64,10 @@ identifier          [A-z_][0-9A-z_]+
 "stdout"        {return (STDOUT);}
 "stdin"         {return (STDIN);}
 
+.               {InvalidToken(); yyterminate();}
+
 %%
+
+void InvalidToken(){
+    printf("Invalid token find !")
+}

@@ -37,19 +37,23 @@ void yyerror(char *c);
           |
     Highest priority
 */
-%left '+' '-'
-%left '*' '/'
-%left '!'
+%left PLUS MINUS
+%left MULT DIV
+%left LOG_NOT
 
 %nonassoc UMINUS
 %nonassoc UPLUS
+
+%start program
 
 %%
 
 /* ------- Rules ------- */
 
-fact: DIGIT
-    ;
+/* PROGRAM */
+PROGRAM : DECLARATION
+        | PROGRAM DECLARATION
+
 
 
 %%
