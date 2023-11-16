@@ -1,14 +1,9 @@
-/* Imports */
 %{
 #include <stdio.h>
 
-/* Function Declaration */
 int yylex(void);
 void yyerror(char *c);
-
 %}
-
-/* ------- Tokens ------- */
 
 /* Special Tokens */
 %token NUMBER
@@ -31,12 +26,7 @@ void yyerror(char *c);
 %token INVOKE CREATE RETURN
 %token IF ELSE LOOP STDOUT STDIN
 
-/* ------- Priority -------
-
-    Lowest priority
-          |
-    Highest priority
-*/
+/* Priority */
 %left PLUS MINUS
 %left MULT DIV
 %left LOG_NOT
@@ -44,21 +34,26 @@ void yyerror(char *c);
 %nonassoc UMINUS
 %nonassoc UPLUS
 
-%start program
+%start PROGRAM
 
 %%
 
-/* ------- Rules ------- */
+PROGRAM:
+    statement_list
+    ;
 
-/* PROGRAM */
-PROGRAM : DECLARATION
-        | PROGRAM DECLARATION
+statement_list:
+    statement
+    | statement_list statement
+    ;
 
-
+statement:
+    IDENTIFIER
+    ;
 
 %%
 
-/* ------- Functions ------- */
+/*  Functions */
 
 void yyerror(char *c) {
     printf("Erro: %s\n", c);
