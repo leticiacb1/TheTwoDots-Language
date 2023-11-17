@@ -6,7 +6,7 @@ void yyerror(char *c);
 %}
 
 /* Special Tokens */
-%token NUMBER
+%token NUMBER STRING
 %token IDENTIFIER
 
 /* Arithmetic Operations */
@@ -18,13 +18,13 @@ void yyerror(char *c);
 /* Delimiters */
 %token OPENING_PARENTHESIS CLOSING_PARENTHESIS
 %token OPENING_BRACKET CLOSING_BRACKET
-%token TWO_DOTS
+%token TWO_DOTS COMMA END_OF_LINE
 
 /* Reserved Word */
 %token DECLARE
 %token STR INT
 %token INVOKE CREATE RETURN
-%token IF ELSE LOOP STDOUT STDIN
+%token IF ELSE LOOP STDOUT STDIN CONCAT
 
 /* Priority */
 %left PLUS MINUS
@@ -38,18 +38,83 @@ void yyerror(char *c);
 
 %%
 
-PROGRAM:
-    statement_list
+PROGRAM: DECLARATION;
+
+DECLARATION: CREATE IDENTIFIER '(' expected_arguments ')' TWO_DOTS types EQUAL BLOCK;
+
+arguments_expected: IDENTIFIER types COMMA arguments
+                  | IDENTIFIER types
+                  ;
+
+types: STR
+     | INT
+     ;
+
+STATEMENT: assigment
+         | print
+         | conditional
+         | while
+         | declare_variable
+         | RETURN BOOL_EXPRESSION
+         ;
+
+print: STDOUT TWO_DOTS BOOL_EXPRESSION
+
+while: LOOP TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS EQUAL BLOCK;
+
+conditional: IF TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS BLOCK
+           | IF TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS BLOCK TWO_DOTS BLOCK
+           ;
+
+declare_variable: DECLARE IDENTIFIER TWO_DOTS types
+                | DECLARE IDENTIFIER TWO_DOTS types EQUAL BOOL_EXPRESSION
+                ;
+
+assigment: IDENTIFIER EQUAL BOOL_EXPRESSION
+         | IDENTIFIER OPENING_PARENTHESIS arguments CLOSING_PARENTHESIS
+         ;
+
+arguments: BOOL_EXPRESSION COMMA arguments
+         | BOOL_EXPRESSION
+         ;
+
+BLOCK: OPENING_BRACKET END_OF_LINE statement_list CLOSING_BRACKET;
+
+statement_list : STATEMENT
+               | statement_list STATEMENT
+               ;
+
+BOOL_EXPRESSION: BOOL_TERM LOG_OR BOOL_EXPRESSION
+               | BOOL_TERM
+               ;
+
+BOOL_TERM: RL_EXPRESSION LOG_AND BOOL_TERM
+         | RL_EXPRESSION
+         ;
+
+RL_EXPRESSION: EXPRESSION LOG_EQ RL_EXPRESSION
+             | EXPRESSION LOG_GT RL_EXPRESSION
+             | EXPRESSION LOG_LT RL_EXPRESSION
+             ;
+
+EXPRESSION: TERM PLUS EXPRESSION
+          | TERM MINUS EXPRESSION
+          | TERM CONCAT EXPRESSION
+          ;
+
+TERM: FACTOR MULT TERM
+    | FACTOR DIV TERM
     ;
 
-statement_list:
-    statement
-    | statement_list statement
-    ;
-
-statement:
-    IDENTIFIER
-    ;
+FACTOR: NUMBER
+      | STRING
+      | IDENTIFIER OPENING_PARENTHESIS arguments CLOSING_PARENTHESIS
+      | PLUS FACTOR
+      | MINUS FACTOR
+      | LOG_NOT FACTOR
+      | OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS
+      | STDIN OPENING_PARENTHESIS CLOSING_PARENTHESIS
+      ;
 
 %%
 

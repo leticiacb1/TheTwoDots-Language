@@ -13,6 +13,7 @@ void invalidtoken();
 /* Auxiliary Tokens definition */
 
 numbers             [1-9][0-9]*
+string              [a-zA-Z]+
 identifier          [A-Za-z_][A-Za-z0-9_]*
 
 %%
@@ -33,6 +34,7 @@ identifier          [A-Za-z_][A-Za-z0-9_]*
 "loop"          {return (LOOP);}
 "stdout"        {return (STDOUT);}
 "stdin"         {return (STDIN);}
+"concat"        {return (CONCAT);}
 
 "and"           {return (LOG_AND);}
 "or"            {return (LOG_OR);}
@@ -52,9 +54,13 @@ identifier          [A-Za-z_][A-Za-z0-9_]*
 "}"             {return (CLOSING_BRACKET);}
 "("             {return (OPENING_PARENTHESIS);}
 ")"             {return (CLOSING_PARENTHESIS);}
+
+"\n"            {return (END_OF_LINE);}
 ":"             {return (TWO_DOTS);}
+","             {return (COMMA);}
 
 {numbers}       {return (NUMBER);}
+{string}        {return (STRING);}
 {identifier}    {return (IDENTIFIER);}
 
 .               {invalidtoken(); yyterminate();}
