@@ -92,26 +92,41 @@ BOOL_TERM: RL_EXPRESSION LOG_AND BOOL_TERM
          | RL_EXPRESSION
          ;
 
-RL_EXPRESSION: EXPRESSION LOG_EQ RL_EXPRESSION
-             | EXPRESSION LOG_GT RL_EXPRESSION
-             | EXPRESSION LOG_LT RL_EXPRESSION
+rel_operator: LOG_EQ
+            | LOG_GT
+            | LOG_LT
+            ;
+
+RL_EXPRESSION: EXPRESSION rel_operator RL_EXPRESSION
+             | EXPRESSION
              ;
 
-EXPRESSION: TERM PLUS EXPRESSION
-          | TERM MINUS EXPRESSION
-          | TERM CONCAT EXPRESSION
+exp_operator: PLUS
+            | MINUS
+            | CONCAT
+            ;
+
+EXPRESSION: TERM exp_operator EXPRESSION
+          | TERM
           ;
 
-TERM: FACTOR MULT TERM
-    | FACTOR DIV TERM
+term_operator: MULT
+             | DIV
+             ;
+
+TERM: FACTOR term_operator TERM
+    | FACTOR
     ;
+
+unary_operation: PLUS
+               | MINUS
+               | LOG_NOT
+               ;
 
 FACTOR: NUMBER
       | STRING
       | IDENTIFIER OPENING_PARENTHESIS arguments CLOSING_PARENTHESIS
-      | PLUS FACTOR
-      | MINUS FACTOR
-      | LOG_NOT FACTOR
+      | unary_operation FACTOR
       | OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS
       | STDIN OPENING_PARENTHESIS CLOSING_PARENTHESIS
       ;
