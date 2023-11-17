@@ -40,9 +40,9 @@ void yyerror(char *c);
 
 PROGRAM: DECLARATION;
 
-DECLARATION: CREATE IDENTIFIER '(' expected_arguments ')' TWO_DOTS types EQUAL BLOCK;
+DECLARATION: CREATE IDENTIFIER '(' arguments_expected ')' TWO_DOTS types EQUAL BLOCK;
 
-arguments_expected: IDENTIFIER types COMMA arguments
+arguments_expected: IDENTIFIER types COMMA arguments_expected
                   | IDENTIFIER types
                   ;
 

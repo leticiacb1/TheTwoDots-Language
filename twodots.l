@@ -18,6 +18,7 @@ identifier          [A-Za-z_][A-Za-z0-9_]*
 
 %%
 
+"\n"            {return (END_OF_LINE);}
 [ \t\n]         ; /* Ignore spaces and tabs */
 
 "declare"       {return (DECLARE);}
@@ -55,7 +56,6 @@ identifier          [A-Za-z_][A-Za-z0-9_]*
 "("             {return (OPENING_PARENTHESIS);}
 ")"             {return (CLOSING_PARENTHESIS);}
 
-"\n"            {return (END_OF_LINE);}
 ":"             {return (TWO_DOTS);}
 ","             {return (COMMA);}
 
