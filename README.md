@@ -81,7 +81,7 @@ stdout  : "Display in screen"
 
 # Input do teclado deve ser inteiro nesse exemplo
 declare x : integer
-stdin : x  
+x = stdin()
 
 ```
 
