@@ -12,56 +12,50 @@ void invalidtoken();
 
 /* Auxiliary Tokens definition */
 
-numbers             [1-9][0-9]*
-string              [a-zA-Z]+
-identifier          [A-Za-z_][A-Za-z0-9_]*
-
 %%
 
-"\n"            {return (END_OF_LINE);}
-[ \t\n]         ; /* Ignore spaces and tabs */
+\n            {return END_OF_LINE;}
 
-"declare"       {return (DECLARE);}
+"declare"       {return DECLARE;}
+"integer"       {return INT;}
 
-"string"        {return (STR);}
-"integer"       {return (INT);}
+"create"        {return CREATE;}
+"invoke"        {return INVOKE;}
+"return"        {return RETURN;}
 
-"create"        {return (CREATE);}
-"invoke"        {return (INVOKE);}
-"return"        {return (RETURN);}
+"if"            {return IF;}
+"else"          {return ELSE;}
+"loop"          {return LOOP;}
+"stdout"        {return STDOUT;}
+"stdin"         {return STDIN;}
+"concat"        {return CONCAT;}
 
-"if"            {return (IF);}
-"else"          {return (ELSE);}
-"loop"          {return (LOOP);}
-"stdout"        {return (STDOUT);}
-"stdin"         {return (STDIN);}
-"concat"        {return (CONCAT);}
+"and"           {return LOG_AND;}
+"or"            {return LOG_OR;}
+"!"             {return LOG_NOT;}
 
-"and"           {return (LOG_AND);}
-"or"            {return (LOG_OR);}
-"!"             {return (LOG_NOT);}
+"+"             {return PLUS;}
+"-"             {return MINUS;}
+"/"             {return DIV;}
+"*"             {return MULT;}
+"="             {return EQUAL;}
 
-"+"             {return (PLUS);}
-"-"             {return (MINUS);}
-"/"             {return (DIV);}
-"*"             {return (MULT);}
-"="             {return (EQUAL);}
+">"             {return LOG_GT;}
+"<"             {return LOG_LT;}
+"=="            {return LOG_EQ;}
 
-">"             {return (LOG_GT);}
-"<"             {return (LOG_LT);}
-"=="            {return (LOG_EQ);}
+"{"             {return OPENING_BRACKET;}
+"}"             {return CLOSING_BRACKET;}
+"("             {return OPENING_PARENTHESIS;}
+")"             {return CLOSING_PARENTHESIS;}
 
-"{"             {return (OPENING_BRACKET);}
-"}"             {return (CLOSING_BRACKET);}
-"("             {return (OPENING_PARENTHESIS);}
-")"             {return (CLOSING_PARENTHESIS);}
+":"             {return TWO_DOTS;}
+","             {return COMMA;}
 
-":"             {return (TWO_DOTS);}
-","             {return (COMMA);}
+[1-9][0-9]*     {return NUMBER;}
+[A-z_][A-z0-9_]*    {return IDENTIFIER;}
 
-{numbers}       {return (NUMBER);}
-{string}        {return (STRING);}
-{identifier}    {return (IDENTIFIER);}
+[ \t]           /* Ignore spaces and tabs */
 
 .               {invalidtoken(); yyterminate();}
 

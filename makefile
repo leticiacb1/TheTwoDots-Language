@@ -21,7 +21,7 @@ $(TARGET): lex.yy.c twodots.tab.c
 
 # ------ Flex ------
 lex.yy.c: $(LEX_FILE) twodots.tab.h
-	$(FLEX) $(LEX_FILE)
+	$(FLEX) -d $(LEX_FILE)
 
 # ------ Bison ------
 twodots.tab.c twodots.tab.h: $(BISON_FILE)

@@ -6,7 +6,7 @@ void yyerror(char *c);
 %}
 
 /* Special Tokens */
-%token NUMBER STRING
+%token NUMBER
 %token IDENTIFIER
 
 /* Arithmetic Operations */
@@ -22,7 +22,7 @@ void yyerror(char *c);
 
 /* Reserved Word */
 %token DECLARE
-%token STR INT
+%token INT
 %token INVOKE CREATE RETURN
 %token IF ELSE LOOP STDOUT STDIN CONCAT
 
@@ -38,25 +38,13 @@ void yyerror(char *c);
 
 %%
 
-PROGRAM: DECLARATION;
+types: INT;
 
-DECLARATION: CREATE IDENTIFIER '(' arguments_expected ')' TWO_DOTS types EQUAL BLOCK;
+function_declaration: CREATE IDENTIFIER '(' arguments_expected ')' TWO_DOTS types EQUAL BLOCK;
 
 arguments_expected: IDENTIFIER types COMMA arguments_expected
                   | IDENTIFIER types
                   ;
-
-types: STR
-     | INT
-     ;
-
-STATEMENT: assigment
-         | print
-         | conditional
-         | while
-         | declare_variable
-         | RETURN BOOL_EXPRESSION
-         ;
 
 print: STDOUT TWO_DOTS BOOL_EXPRESSION
 
@@ -70,6 +58,8 @@ declare_variable: DECLARE IDENTIFIER TWO_DOTS types
                 | DECLARE IDENTIFIER TWO_DOTS types EQUAL BOOL_EXPRESSION
                 ;
 
+return_function_value: RETURN BOOL_EXPRESSION
+
 assigment: IDENTIFIER EQUAL BOOL_EXPRESSION
          | IDENTIFIER OPENING_PARENTHESIS arguments CLOSING_PARENTHESIS
          ;
@@ -78,11 +68,41 @@ arguments: BOOL_EXPRESSION COMMA arguments
          | BOOL_EXPRESSION
          ;
 
-BLOCK: OPENING_BRACKET END_OF_LINE statement_list CLOSING_BRACKET;
-
 statement_list : STATEMENT
                | statement_list STATEMENT
                ;
+
+rel_operator: LOG_EQ
+            | LOG_GT
+            | LOG_LT
+            ;
+
+exp_operator: PLUS
+            | MINUS
+            | CONCAT
+            ;
+
+term_operator: MULT
+             | DIV
+             ;
+
+unary_operation: PLUS
+               | MINUS
+               | LOG_NOT
+               ;
+
+PROGRAM: STATEMENT;
+
+STATEMENT: assigment END_OF_LINE
+         | print END_OF_LINE
+         | conditional END_OF_LINE
+         | while END_OF_LINE
+         | declare_variable END_OF_LINE
+         | function_declaration END_OF_LINE
+         | return_function_value END_OF_LINE
+         | END_OF_LINE;
+
+BLOCK: OPENING_BRACKET END_OF_LINE statement_list CLOSING_BRACKET;
 
 BOOL_EXPRESSION: BOOL_TERM LOG_OR BOOL_EXPRESSION
                | BOOL_TERM
@@ -92,39 +112,19 @@ BOOL_TERM: RL_EXPRESSION LOG_AND BOOL_TERM
          | RL_EXPRESSION
          ;
 
-rel_operator: LOG_EQ
-            | LOG_GT
-            | LOG_LT
-            ;
-
 RL_EXPRESSION: EXPRESSION rel_operator RL_EXPRESSION
              | EXPRESSION
              ;
-
-exp_operator: PLUS
-            | MINUS
-            | CONCAT
-            ;
 
 EXPRESSION: TERM exp_operator EXPRESSION
           | TERM
           ;
 
-term_operator: MULT
-             | DIV
-             ;
-
 TERM: FACTOR term_operator TERM
     | FACTOR
     ;
 
-unary_operation: PLUS
-               | MINUS
-               | LOG_NOT
-               ;
-
 FACTOR: NUMBER
-      | STRING
       | IDENTIFIER OPENING_PARENTHESIS arguments CLOSING_PARENTHESIS
       | unary_operation FACTOR
       | OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS
