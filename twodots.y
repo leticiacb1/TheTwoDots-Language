@@ -130,8 +130,13 @@ while: LOOP TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS EQU
 assigment: IDENTIFIER EQUAL BOOL_EXPRESSION;
 
 /* ----- Function ----- */
-function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS  CLOSING_PARENTHESIS TWO_DOTS types EQUAL BLOCK;
+function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS  function_arguments CLOSING_PARENTHESIS TWO_DOTS types EQUAL BLOCK;
 function_call : INVOKE TWO_DOTS IDENTIFIER OPENING_PARENTHESIS  CLOSING_PARENTHESIS;
+
+function_arguments: types IDENTIFIER  COMMA function_arguments
+                  | types IDENTIFIER
+                  | /* SEM ARGUMENTO */
+                  ;
 
 /* ----- Operators ----- */
 
@@ -159,6 +164,5 @@ void yyerror(const char *s) {
     extern int yylineno;
     extern char *yytext;
 
-    /* mensagem de erro exibe o símbolo que causou erro e o número da linha */
-    printf("\nErro (%s): símbolo \"%s\" (linha %d)\n", s, yytext, yylineno);
+    printf("\n [ ERROR ] (%s): token \"%s\" (line %d)\n", s, yytext, yylineno);
 }
