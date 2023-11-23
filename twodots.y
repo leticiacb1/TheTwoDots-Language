@@ -132,13 +132,18 @@ while: LOOP TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS EQU
 assigment: IDENTIFIER EQUAL BOOL_EXPRESSION;
 
 /* ----- Function ----- */
-function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS  function_arguments CLOSING_PARENTHESIS TWO_DOTS types EQUAL BLOCK;
-function_call : INVOKE TWO_DOTS IDENTIFIER OPENING_PARENTHESIS  CLOSING_PARENTHESIS;
+function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS expected_function_arguments CLOSING_PARENTHESIS TWO_DOTS types EQUAL BLOCK;
+function_call : INVOKE TWO_DOTS IDENTIFIER OPENING_PARENTHESIS invoke_function_arguments CLOSING_PARENTHESIS;
 
-function_arguments: types IDENTIFIER  COMMA function_arguments
-                  | types IDENTIFIER
-                  | /* SEM ARGUMENTO */
-                  ;
+expected_function_arguments: types IDENTIFIER  COMMA expected_function_arguments
+                           | types IDENTIFIER
+                           | /* SEM ARGUMENTO */
+                           ;
+
+invoke_function_arguments: IDENTIFIER COMMA invoke_function_arguments
+                         | IDENTIFIER
+                         | /* SEM ARGUMENTO */
+                         ;
 
 /* ----- Operators ----- */
 

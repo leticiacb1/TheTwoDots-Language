@@ -18,3 +18,5 @@ invoke : main()
 
 create ok ( integer x) : integer = {
 }
+
+invoke : ok(x)
