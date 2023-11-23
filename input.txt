@@ -4,3 +4,6 @@ declare z:integer
 
 if : ( 2 ) {
 }
+
+loop : (2) = {
+}
