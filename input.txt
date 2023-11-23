@@ -9,3 +9,8 @@ loop : (2) = {
 }
 
 x = 2
+
+create main () : integer = {
+}
+
+invoke : main()
