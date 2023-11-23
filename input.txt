@@ -1,11 +1,11 @@
 declare x:integer
-declare y:integer
-declare z:integer
+declare y:string
+declare z:boolean
 
 if : ( 2 ) {
 }
 
-loop : (2) = {
+loop : (!2) = {
 }
 
 x = 2

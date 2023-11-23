@@ -11,11 +11,12 @@ void invalidtoken();
 %option noyywrap
 
 numero		[1-9][0-9]*
+alpha       \"([^\\\"]|\\.)*\"
 identifier  [A-z_][A-z0-9_]*
 
 %%
 
-[\t ]+           {printf("\n [LEX] ESPACO \n");}/* Ignore spaces and tabs */
+[\t ]+          {printf("\n [LEX] ESPACO \n");}/* Ignore spaces and tabs */
 
 {numero}        {yylval = atof(yytext); printf("\n [LEX] Number =  %d\n", yylval); return NUMBER;}
 
@@ -35,6 +36,8 @@ identifier  [A-z_][A-z0-9_]*
 
 "declare"       {printf("\n [LEX] DECLARE =  %s\n", yytext); return DECLARE;}
 "integer"       {printf("\n [LEX] INT =  %s\n", yytext); return INT;}
+"string"        {printf("\n [LEX] STR =  %s\n", yytext); return STR;}
+"boolean"       {printf("\n [LEX] BOOL =  %s\n", yytext); return BOOL;}
 
 "create"        {printf("\n [LEX] CREATE =  %s\n", yytext); return CREATE;}
 "invoke"        {printf("\n [LEX] INVOKE =  %s\n", yytext); return INVOKE;}
@@ -46,8 +49,6 @@ identifier  [A-z_][A-z0-9_]*
 "stdout"        {printf("\n [LEX] PRINT =  %s\n", yytext); return STDOUT;}
 "stdin"         {printf("\n [LEX] INPUT =  %s\n", yytext); return STDIN;}
 
-{identifier}    {printf("\n [LEX] IDENTIFIER =  %s\n", yytext); return IDENTIFIER;}
-
 "{"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return OPENING_BRACKET;}
 "}"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return CLOSING_BRACKET;}
 "("             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return OPENING_PARENTHESIS;}
@@ -56,6 +57,10 @@ identifier  [A-z_][A-z0-9_]*
 ":"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return TWO_DOTS;}
 ","             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return COMMA;}
 
+{identifier}    {printf("\n [LEX] IDENTIFIER =  %s\n", yytext); return IDENTIFIER;}
+{alpha}         {printf("\n [LEX] ALPHA =  %s\n", yytext); return ALPHA;}
+
+"#".*           {printf("\n [LEX] COMENTARIO \n");}    /* Ignore comentario */
 "\n"            {printf("\n [LEX] END OF LINE", yytext); return END_OF_LINE;}
 [|\n]		    return yytext[0];
 

@@ -7,7 +7,7 @@ void yyerror(const char *);
 %}
 
 /* Special Tokens */
-%token NUMBER
+%token NUMBER ALPHA
 %token IDENTIFIER
 
 /* Arithmetic Operations */
@@ -23,7 +23,7 @@ void yyerror(const char *);
 
 /* Reserved Word */
 %token DECLARE
-%token INT
+%token INT STR BOOL
 %token INVOKE CREATE RETURN
 %token IF ELSE LOOP STDOUT STDIN
 
@@ -100,7 +100,10 @@ TERM: FACTOR term_operator TERM
     FACTOR
    -------- */
 FACTOR: NUMBER
-      |
+      | ALPHA
+      | unary_operation FACTOR
+      | OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS
+      | STDIN OPENING_PARENTHESIS CLOSING_PARENTHESIS
       ;
 
 /* --------------------------------------------
@@ -112,7 +115,11 @@ statement_list : STATEMENT
                | statement_list STATEMENT
 
 /* ----- Variable ----- */
-types : INT;
+types : INT
+      | STR
+      | BOOL
+      ;
+
 declare_variable: DECLARE IDENTIFIER TWO_DOTS types
                 | DECLARE IDENTIFIER TWO_DOTS types EQUAL BOOL_EXPRESSION
                 ;
@@ -121,12 +128,12 @@ declare_variable: DECLARE IDENTIFIER TWO_DOTS types
 print: STDOUT TWO_DOTS BOOL_EXPRESSION;
 
 /* ----- Conditional ----- */
-conditional: IF TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS BLOCK
-           | IF TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS BLOCK TWO_DOTS BLOCK
+conditional: IF TWO_DOTS  BOOL_EXPRESSION  BLOCK
+           | IF TWO_DOTS  BOOL_EXPRESSION  BLOCK TWO_DOTS BLOCK
            ;
 
 /* ----- Loop ----- */
-while: LOOP TWO_DOTS OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS EQUAL BLOCK;
+while: LOOP TWO_DOTS  BOOL_EXPRESSION  EQUAL BLOCK;
 
 /* ----- Assigment ----- */
 assigment: IDENTIFIER EQUAL BOOL_EXPRESSION;
@@ -159,6 +166,11 @@ rel_operator: LOG_EQ
             | LOG_GT
             | LOG_LT
             ;
+
+unary_operation: PLUS
+               | MINUS
+               | LOG_NOT
+               ;
 
 %%
 
