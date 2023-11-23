@@ -35,7 +35,8 @@ void yyerror(const char *);
 
 %%
 
-PROGRAM: STATEMENT  PROGRAM
+PROGRAM: STATEMENT  END_OF_LINE PROGRAM
+       | STATEMENT  END_OF_LINE
        | STATEMENT
        ;
 
@@ -56,14 +57,13 @@ assigment: IDENTIFIER EQUAL BOOL_EXPRESSION;
 function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS  CLOSING_PARENTHESIS TWO_DOTS types EQUAL BLOCK;
 function_call : INVOKE TWO_DOTS IDENTIFIER OPENING_PARENTHESIS  CLOSING_PARENTHESIS;
 
-STATEMENT: declare_variable END_OF_LINE
-         | conditional END_OF_LINE
-         | print END_OF_LINE
-         | while END_OF_LINE
-         | assigment END_OF_LINE
-         | function_declaration END_OF_LINE
-         | function_call END_OF_LINE
-         | END_OF_LINE
+STATEMENT: declare_variable
+         | conditional
+         | print
+         | while
+         | assigment
+         | function_declaration
+         | function_call
          | /* VAZIO */
          ;
 
