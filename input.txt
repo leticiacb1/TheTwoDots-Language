@@ -1,0 +1,6 @@
+declare x:integer
+declare y:integer
+declare z:integer
+
+if : ( 2 ) {
+}

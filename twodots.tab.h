@@ -84,9 +84,7 @@ extern int yydebug;
     LOOP = 285,                    /* LOOP  */
     STDOUT = 286,                  /* STDOUT  */
     STDIN = 287,                   /* STDIN  */
-    CONCAT = 288,                  /* CONCAT  */
-    UMINUS = 289,                  /* UMINUS  */
-    UPLUS = 290                    /* UPLUS  */
+    UMINUS = 288                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

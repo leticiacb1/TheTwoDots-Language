@@ -1,61 +1,63 @@
 %{
-
 #include <stdio.h>
 #include <string.h>
+
 #include "twodots.tab.h"
 
 void invalidtoken();
-
 %}
 
+%option yylineno
 %option noyywrap
 
-/* Auxiliary Tokens definition */
+numero		[1-9][0-9]*
+identifier  [A-z_][A-z0-9_]*
 
 %%
 
-\n            {return END_OF_LINE;}
+[\t ]+           {printf("\n [LEX] ESPACO \n");}/* Ignore spaces and tabs */
 
-"declare"       {return DECLARE;}
-"integer"       {return INT;}
+{numero}        {yylval = atof(yytext); printf("\n [LEX] Number =  %d\n", yylval); return NUMBER;}
 
-"create"        {return CREATE;}
-"invoke"        {return INVOKE;}
-"return"        {return RETURN;}
+"+"             {printf("\n [LEX] PLUS =  %s\n", yytext); return PLUS;}
+"-"             {printf("\n [LEX] MINUS =  %s\n", yytext); return MINUS;}
+"/"             {printf("\n [LEX] DIV =  %s\n", yytext); return DIV;}
+"*"             {printf("\n [LEX] MULT =  %s\n", yytext); return MULT;}
+"="             {printf("\n [LEX] EQUAL =  %s\n", yytext); return EQUAL;}
 
-"if"            {return IF;}
-"else"          {return ELSE;}
-"loop"          {return LOOP;}
-"stdout"        {return STDOUT;}
-"stdin"         {return STDIN;}
-"concat"        {return CONCAT;}
+">"             {printf("\n [LEX] GT =  %s\n", yytext); return LOG_GT;}
+"<"             {printf("\n [LEX] LT =  %s\n", yytext); return LOG_LT;}
+"=="            {printf("\n [LEX] LG_EQUAL =  %s\n", yytext); return LOG_EQ;}
 
-"and"           {return LOG_AND;}
-"or"            {return LOG_OR;}
-"!"             {return LOG_NOT;}
+"and"           {printf("\n [LEX] AND =  %s\n", yytext); return LOG_AND;}
+"or"            {printf("\n [LEX] OR =  %s\n", yytext); return LOG_OR;}
+"!"             {printf("\n [LEX] NOT =  %s\n", yytext); return LOG_NOT;}
 
-"+"             {return PLUS;}
-"-"             {return MINUS;}
-"/"             {return DIV;}
-"*"             {return MULT;}
-"="             {return EQUAL;}
+"declare"       {printf("\n [LEX] DECLARE =  %s\n", yytext); return DECLARE;}
+"integer"       {printf("\n [LEX] INT =  %s\n", yytext); return INT;}
 
-">"             {return LOG_GT;}
-"<"             {return LOG_LT;}
-"=="            {return LOG_EQ;}
+"create"        {printf("\n [LEX] CREATE =  %s\n", yytext); return CREATE;}
+"invoke"        {printf("\n [LEX] INVOKE =  %s\n", yytext); return INVOKE;}
+"return"        {printf("\n [LEX] RETURN =  %s\n", yytext); return RETURN;}
 
-"{"             {return OPENING_BRACKET;}
-"}"             {return CLOSING_BRACKET;}
-"("             {return OPENING_PARENTHESIS;}
-")"             {return CLOSING_PARENTHESIS;}
+"if"            {printf("\n [LEX] IF =  %s\n", yytext); return IF;}
+"else"          {printf("\n [LEX] ELSE =  %s\n", yytext); return ELSE;}
+"loop"          {printf("\n [LEX] LOOP =  %s\n", yytext); return LOOP;}
+"stdout"        {printf("\n [LEX] PRINT =  %s\n", yytext); return STDOUT;}
+"stdin"         {printf("\n [LEX] INPUT =  %s\n", yytext); return STDIN;}
 
-":"             {return TWO_DOTS;}
-","             {return COMMA;}
+{identifier}    {printf("\n [LEX] IDENTIFIER =  %s\n", yytext); return IDENTIFIER;}
 
-[1-9][0-9]*     {return NUMBER;}
-[A-z_][A-z0-9_]*    {return IDENTIFIER;}
+"{"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return OPENING_BRACKET;}
+"}"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return CLOSING_BRACKET;}
+"("             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return OPENING_PARENTHESIS;}
+")"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return CLOSING_PARENTHESIS;}
 
-[ \t]           /* Ignore spaces and tabs */
+":"             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return TWO_DOTS;}
+","             {printf("\n [LEX] DELIMITER =  %s\n", yytext); return COMMA;}
+
+"\n"            {printf("\n [LEX] END OF LINE", yytext); return END_OF_LINE;}
+[|\n]		    return yytext[0];
 
 .               {invalidtoken(); yyterminate();}
 

@@ -4,6 +4,7 @@ CFLAGS = -Wall
 
 # Executable Output
 TARGET = twodots
+INPUT_FILE = input.txt
 
 # Source files
 LEX_FILE = twodots.l
@@ -26,6 +27,9 @@ lex.yy.c: $(LEX_FILE) twodots.tab.h
 # ------ Bison ------
 twodots.tab.c twodots.tab.h: $(BISON_FILE)
 	$(BISON) -d $(BISON_FILE)
+
+execute:
+	./$(TARGET) < $(INPUT_FILE)
 
 # ------ Clean  ------
 clean:
