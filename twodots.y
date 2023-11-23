@@ -113,7 +113,9 @@ statement_list : STATEMENT
 
 /* ----- Variable ----- */
 types : INT;
-declare_variable: DECLARE IDENTIFIER TWO_DOTS types;
+declare_variable: DECLARE IDENTIFIER TWO_DOTS types
+                | DECLARE IDENTIFIER TWO_DOTS types EQUAL BOOL_EXPRESSION
+                ;
 
 /* ----- Print ----- */
 print: STDOUT TWO_DOTS BOOL_EXPRESSION;

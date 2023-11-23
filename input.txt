@@ -9,6 +9,7 @@ loop : (2) = {
 }
 
 x = 2
+declare w : integer = 1
 
 create main () : integer = {
 }
