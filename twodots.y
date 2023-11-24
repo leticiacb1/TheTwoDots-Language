@@ -49,18 +49,20 @@ PROGRAM: STATEMENT  END_OF_LINE PROGRAM
 STATEMENT: declare_variable
          | conditional
          | print
+         | input
          | while
          | assigment
          | function_declaration
          | function_call
+         | BOOL_EXPRESSION
          | /* VAZIO */
          ;
 
 /* ---------
     BLOCK
     --------- */
-BLOCK: OPENING_BRACKET END_OF_LINE statement_list CLOSING_BRACKET
-
+BLOCK: OPENING_BRACKET END_OF_LINE statement_list CLOSING_BRACKET;
+FUNCTION_BLOCK: OPENING_BRACKET END_OF_LINE statement_list function_return END_OF_LINE CLOSING_BRACKET;
 
 /* -----------------
     BOOL_EXPRESSION
@@ -101,9 +103,11 @@ TERM: FACTOR term_operator TERM
    -------- */
 FACTOR: NUMBER
       | ALPHA
+      | IDENTIFIER
+      | function_call
       | unary_operation FACTOR
       | OPENING_PARENTHESIS BOOL_EXPRESSION CLOSING_PARENTHESIS
-      | STDIN OPENING_PARENTHESIS CLOSING_PARENTHESIS
+      | input
       ;
 
 /* --------------------------------------------
@@ -112,7 +116,9 @@ FACTOR: NUMBER
 
 /* ----- Auxiliar statement list ----- */
 statement_list : STATEMENT
-               | statement_list STATEMENT
+               | statement_list END_OF_LINE STATEMENT
+               | statement_list END_OF_LINE STATEMENT END_OF_LINE
+               ;
 
 /* ----- Variable ----- */
 types : INT
@@ -127,6 +133,9 @@ declare_variable: DECLARE IDENTIFIER TWO_DOTS types
 /* ----- Print ----- */
 print: STDOUT TWO_DOTS BOOL_EXPRESSION;
 
+/* ----- Input ----- */
+input: STDIN OPENING_PARENTHESIS CLOSING_PARENTHESIS
+
 /* ----- Conditional ----- */
 conditional: IF TWO_DOTS  BOOL_EXPRESSION  BLOCK
            | IF TWO_DOTS  BOOL_EXPRESSION  BLOCK TWO_DOTS BLOCK
@@ -139,8 +148,9 @@ while: LOOP TWO_DOTS  BOOL_EXPRESSION  EQUAL BLOCK;
 assigment: IDENTIFIER EQUAL BOOL_EXPRESSION;
 
 /* ----- Function ----- */
-function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS expected_function_arguments CLOSING_PARENTHESIS TWO_DOTS types EQUAL BLOCK;
-function_call : INVOKE TWO_DOTS IDENTIFIER OPENING_PARENTHESIS invoke_function_arguments CLOSING_PARENTHESIS;
+function_declaration: CREATE IDENTIFIER OPENING_PARENTHESIS expected_function_arguments CLOSING_PARENTHESIS TWO_DOTS types EQUAL FUNCTION_BLOCK;
+function_call: INVOKE TWO_DOTS IDENTIFIER OPENING_PARENTHESIS invoke_function_arguments CLOSING_PARENTHESIS;
+function_return: RETURN BOOL_EXPRESSION;
 
 expected_function_arguments: types IDENTIFIER  COMMA expected_function_arguments
                            | types IDENTIFIER
