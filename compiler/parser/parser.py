@@ -72,6 +72,44 @@ class Parser:
         #     raise InvalidExpression(f"\n [STATEMENT] Expected assigment token type | Got {tokens.next}")
 
     @staticmethod
+    def parser_func_call() -> Node:
+        tokens = Parser().tokenizer
+
+        if (tokens.next.type != reserved_word._Type.INVOKE):
+            raise InvalidExpression(f"\n [FUNC CALL] Expected INVOKE token type | Got {tokens.next}")
+        tokens.select_next()
+
+        if (tokens.next._type != delimiters._Type.TWO_DOTS):
+            raise InvalidExpression(f"\n [FUNC CALL] Expected TWO DOTS type | Got {tokens.next}")
+        tokens.select_next()
+
+        if(tokens.next._type != specials._Type.IDENTIFIER):
+            raise InvalidExpression(f"\n [FUNC CALL] Expected IDENTIFIER type | Got {tokens.next}")
+        node_identifier = Identifier(value=tokens.next.value)
+        tokens.select_next()
+
+        func_call_node = FuncCall(value=node_identifier.value)
+
+        if (tokens.next._type != delimiters._Type.OPEN_PARENTHESES):
+            raise InvalidExpression(f"\n [FUNC CALL] Expected close parentheses token type | Got {tokens.next}")
+        tokens.select_next()
+
+        while (tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
+            bool_expression = Parser().parse_bool_expression()
+            func_call_node.add_child(bool_expression)
+
+            if(tokens.next.type == delimiters._Type.COMMAN):
+                tokens.select_next()
+            else:
+                break
+
+        if (tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
+            raise InvalidExpression(f"\n [FUNC CALL] Expected CLOSE_PARENTHESES token type | Got {tokens.next}")
+        tokens.select_next()
+
+        return func_call_node
+
+    @staticmethod
     def parser_factor() -> Node:
         tokens = Parser().tokenizer
 
