@@ -6,7 +6,7 @@ if : ( x > 2 ) {
     stdout : "Hello World"
 }
 
-loop : (!2) = {
+loop : (!2)  {
     x = stdin()
     declare b: integer = 2
 }

@@ -49,7 +49,6 @@ PROGRAM: STATEMENT  END_OF_LINE PROGRAM
 STATEMENT: declare_variable
          | conditional
          | print
-         | input
          | while
          | assigment
          | function_declaration
@@ -142,7 +141,7 @@ conditional: IF TWO_DOTS  BOOL_EXPRESSION  BLOCK
            ;
 
 /* ----- Loop ----- */
-while: LOOP TWO_DOTS  BOOL_EXPRESSION  EQUAL BLOCK;
+while: LOOP TWO_DOTS  BOOL_EXPRESSION BLOCK;
 
 /* ----- Assigment ----- */
 assigment: IDENTIFIER EQUAL BOOL_EXPRESSION;

@@ -13,7 +13,8 @@ create soma ( x : integer , y : integer ) : integer = {
 declare x : integer = 2;
 declare y : integer = 4;
 
-declare z = invoke : soma(x,y)
+declare z : integer
+z = invoke : soma(x,y)
 
 stdout : "\n Valor de z : "
 stdout : z

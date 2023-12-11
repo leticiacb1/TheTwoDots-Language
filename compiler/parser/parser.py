@@ -1,5 +1,5 @@
 from compiler.tokenizer import Tokenizer
-from compiler.constants import delimiters, number, operators, reserved_word, identifier , text , types, eof
+from compiler.constants import delimiters, operators, reserved_word, specials, types
 from compiler.errors.parser import InvalidExpression
 from compiler.errors.tokens import InvalidToken
 from compiler.node import (IntVal, StrVal, VarDec, FuncDec, BinOp, UnOp, NoOp, Identifier, Assigment, Node, Println , Scanln, If , For, Block , Program , Return, FuncCall)
