@@ -9,12 +9,16 @@ create soma ( x : integer , y : integer ) : integer = {
   return x + y
 }
 
-# Usando a função
-declare x : integer = 2;
-declare y : integer = 4;
+create main() : integer = {
 
-declare z : integer
-z = invoke : soma(x,y)
+    # Usando a função
+    declare x : integer = 2;
+    declare y : integer = 4;
 
-stdout : "\n Valor de z : "
-stdout : z
+    declare z : integer
+    z = invoke : soma(x,y)
+
+    stdout : "\n Valor de z : "
+    stdout : z
+
+}

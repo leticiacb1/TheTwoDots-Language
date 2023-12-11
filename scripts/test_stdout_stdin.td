@@ -1,18 +1,19 @@
+create main() : integer = {
+    # Declarando variáveis
+    declare x : integer = 2
+    declare y : string = "y"
 
-# Declarando variáveis
-declare x : integer = 2
-declare y : string = "y"
+    declare w : integer
+    declare z : integer
 
-declare w : integer
-declare z : integer
+    z = 10 *2 --2 /2    # z = 11
 
-z = 10 *2 --2 /2    # z = 11
+    w = sdtin()
+    stdout : " Valor de w : "
+    stdout : w
 
-w = sdtin()
-stdout : " Valor de w : "
-stdout : w
-
-if : ( z == 11 ) = {
-  # Bloco if
-  stdout : " Z é igual a 2"
+    if : ( z == 11 ) = {
+      # Bloco if
+      stdout : " Z é igual a 2"
+    }
 }

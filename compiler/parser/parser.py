@@ -2,8 +2,10 @@ from compiler.tokenizer import Tokenizer
 from compiler.constants import delimiters, operators, reserved_word, specials, types
 from compiler.errors.parser import InvalidExpression
 from compiler.errors.tokens import InvalidToken
-from compiler.node import (IntVal, StrVal, VarDec, FuncDec, BinOp, UnOp, NoOp, Identifier, Assigment, Node, Println , Scanln, If , For, Block , Program , Return, FuncCall)
-
+from compiler.node import (IntVal, StrVal, VarDec, FuncDec,
+                           BinOp, UnOp, NoOp, Identifier, Assigment,
+                           Node, Println , Scanln, If , For, Block ,
+                           Program , Return, FuncCall)
 
 class Parser:
     tokenizer: object = Tokenizer('')
@@ -506,10 +508,10 @@ class Parser:
         node_funcdec = FuncDec(value='FUNCDEC')
         tokens = Parser().tokenizer
 
-        if (tokens.next.type == functions._Type.FUNC):
+        if (tokens.next.type == reserved_word._Type.CREATE):
             tokens.select_next()
 
-            if(tokens.next.type == identifier._Type.IDENTIFIER):
+            if(tokens.next.type == specials._Type.IDENTIFIER):
                 function_name = Identifier(value=tokens.next.value)
                 tokens.select_next()
 
@@ -519,11 +521,11 @@ class Parser:
                     while (tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
 
                         # ---- Add argumentos -----
-                        if(tokens.next.type == identifier._Type.IDENTIFIER):
+                        if(tokens.next.type == specials._Type.IDENTIFIER):
                             node_identifier = Identifier(value=tokens.next.value)
                             tokens.select_next()
 
-                            if(tokens.next.type == types.TYPE_INT or tokens.next.type == types.TYPE_STR):
+                            if(tokens.next.type == types._Type.INT or tokens.next.type == types._Type.STR):
                                 _type = tokens.next.type
 
                                 arg = VarDec(value=_type)
@@ -542,30 +544,36 @@ class Parser:
                     else:
                         raise InvalidExpression(f"\n [DECLARATION] Expected close parentheses type | Got {tokens.next}")
 
-                    if (tokens.next.type == types.TYPE_INT or tokens.next.type == types.TYPE_STR):
+                    if (tokens.next.type == delimiters._Type.TWO_DOTS):
+                        tokens.select_next()
 
-                        node_definition = VarDec(value=tokens.next.type)
+                        if(tokens.next.type not in [types._Type.INT , types._Type.STR]):
+                            raise InvalidExpression(f"\n [DECLARE] Expected (INT/STR) type | Got {tokens.next}")
+                        _type = tokens.next.type
+                        tokens.select_next()
+
+                        if(tokens.next.type != operators._Type.EQUAL):
+                            raise InvalidExpression(f"\n [DECLARE] Expected EQUAL type | Got {tokens.next}")
+                        tokens.select_next()
+
+                        node_definition = VarDec(value=_type)
                         node_definition.add_child(function_name)
 
-                        tokens.select_next()
                         node_block = Parser().block()
 
                         if (tokens.next.type == delimiters._Type.END_OF_LINE):
-                            tokens.select_next() # Consome \n
+                            tokens.select_next()
 
-                            # Add definição da função como filho:
                             node_funcdec.add_child(node_definition)
 
-                            # Add argumentos
                             for arg in args_list:
                                 node_funcdec.add_child(arg)
 
-                            # Add bloco de execução da função
                             node_funcdec.add_child(node_block)
 
                             return node_funcdec
                     else:
-                        raise InvalidExpression(f"\n [DECLARE] Expected END OF LINE type | Got {tokens.next}")
+                        raise InvalidExpression(f"\n [DECLARE] Expected TWO DOTS type | Got {tokens.next}")
         else:
             raise InvalidExpression(f"\n [DECLARE] Expected FUNCDEC type | Got {tokens.next}")
 
