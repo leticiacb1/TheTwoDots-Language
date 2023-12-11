@@ -475,7 +475,7 @@ class Parser:
 
                     node = var_dec_node
                 else:
-                    raise InvalidExpression(f"\n [STATEMENT] Expected INT/STR type | Got {tokens.next}")
+                    raise InvalidExpression(f"\n [STATEMENT] Expected (INT/STR) type | Got {tokens.next}")
             else:
                 raise InvalidExpression(f"\n [STATEMENT] Expected IDENTIFIER type | Got {tokens.next}")
 
@@ -565,7 +565,7 @@ class Parser:
                     if(tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
                         tokens.select_next()
                     else:
-                        raise InvalidExpression(f"\n [DECLARATION] Expected close parentheses type | Got {tokens.next}")
+                        raise InvalidExpression(f"\n [DECLARATION] Expected CLOSE PARENTHESES type | Got {tokens.next}")
 
                     if (tokens.next.type == delimiters._Type.TWO_DOTS):
                         tokens.select_next()
