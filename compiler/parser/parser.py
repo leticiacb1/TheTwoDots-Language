@@ -448,32 +448,32 @@ class Parser:
             #         raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
             # else:
             #     raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
-        elif (tokens.next.type == functions._Type.VAR):
-            # Var | identifier | type | = BExpression
+        elif (tokens.next.type == reserved_word._Type.DECLARE):
             tokens.select_next()
 
-            if (tokens.next.type == identifier._Type.IDENTIFIER):
+            if (tokens.next.type == specials._Type.IDENTIFIER):
 
                 node_identifier = Identifier(value=tokens.next.value)
                 tokens.select_next()
 
-                # --------- Type ---------
-                if (tokens.next.type == types.TYPE_INT or tokens.next.type == types.TYPE_STR):
+                if (tokens.next._type != delimiters._Type.TWO_DOTS):
+                    raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
+                tokens.select_next()
+
+                if (tokens.next.type in [types._Type.INT , types._Type.STR]):
                     _type = tokens.next.type
 
                     # Add children
                     var_dec_node = VarDec(value=_type)
                     var_dec_node.add_child(node_identifier)
-
-                    # Caso tenha 2° filho:
                     tokens.select_next()
+
                     if (tokens.next.type == operators._Type.EQUAL):
                         tokens.select_next()
                         bool_expression = Parser().parse_bool_expression()
                         var_dec_node.add_child(bool_expression)
 
                     node = var_dec_node
-
                 else:
                     raise InvalidExpression(f"\n [STATEMENT] Expected 'type' type | Got {tokens.next}")
             else:
