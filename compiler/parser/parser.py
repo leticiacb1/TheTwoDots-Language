@@ -351,48 +351,52 @@ class Parser:
 
     @staticmethod
     def parser_statement() -> Node:
-
         tokens = Parser().tokenizer
 
         if (tokens.next.type == delimiters._Type.END_OF_LINE):
             tokens.select_next()
             node = NoOp(value='END_OF_LINE')
 
-        elif (tokens.next.type == identifier._Type.IDENTIFIER):
+        elif (tokens.next.type == specials._Type.IDENTIFIER):
             node = Parser().parser_assigment()
 
-        elif (tokens.next.type == functions._Type.PRINTLN):
+        elif (tokens.next.type == reserved_word._Type.STDOUT):
             tokens.select_next()
 
-            if (tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
-                tokens.select_next()
-
-                bool_expression = Parser().parse_bool_expression() # bool_expression ?
-
-                node_println = Println(value=functions._Type.PRINTLN)
-                node_println.add_child(bool_expression)
-
-                if (tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
-                    raise InvalidExpression(f"\n [STATEMENT] Expected close parentheses type | Got {tokens.next}")
-                tokens.select_next()
-
-                node = node_println
-
-            else:
-                raise InvalidExpression(f"\n [STATEMENT] Expected open parentheses type | Got {tokens.next}")
-
-        elif(tokens.next.type == functions._Type.IF):
+            if(tokens.next._type != delimiters._Type.TWO_DOTS):
+                raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
             tokens.select_next()
 
-            bool_expression = Parser().parse_bool_expression() # bool_expression ?
-            block_if        = Parser().block()                 # Sem select next entre os dois?
+            bool_expression = Parser().parse_bool_expression()
 
-            # Nó do tipo if :
-            node_if = If(value=functions._Type.IF)
+            node_println = Println(value=reserved_word._Type.STDOUT)
+            node_println.add_child(bool_expression)
+            node = node_println
+
+        elif(tokens.next.type == reserved_word._Type.IF):
+            tokens.select_next()
+
+            if (tokens.next._type != delimiters._Type.TWO_DOTS):
+                raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
+            tokens.select_next()
+
+            if (tokens.next._type != delimiters._Type.OPEN_PARENTHESES):
+                raise InvalidExpression(f"\n [STATEMENT] Expected OPEN PARENTHESES type | Got {tokens.next}")
+            tokens.select_next()
+
+            bool_expression = Parser().parse_bool_expression()
+
+            if (tokens.next._type != delimiters._Type.CLOSE_PARENTHESES):
+                raise InvalidExpression(f"\n [STATEMENT] Expected CLOSE PARENTHESES type | Got {tokens.next}")
+            tokens.select_next()
+
+            block_if        = Parser().block()
+
+            node_if = If(value=reserved_word._Type.IF)
             node_if.add_child(bool_expression)
             node_if.add_child(block_if)
 
-            if(tokens.next.type == functions._Type.ELSE): # Bloco else : 3 filhos
+            if(tokens.next.type == delimiters._Type.TWO_DOTS):
                 tokens.select_next()
                 block_else = Parser().block()
                 node_if.add_child(block_else)
@@ -467,8 +471,7 @@ class Parser:
         else:
             raise InvalidToken(f"\n [STATEMENT] Token type received : {tokens.next.type}")
 
-        # Obriga consumo de \n após essas estruturas
-        if(tokens.next.type != eof._Type.EOF):
+        if(tokens.next.type != specials._Type.EOF):
             if (tokens.next.type == delimiters._Type.END_OF_LINE):
                 tokens.select_next()
             else:
@@ -583,7 +586,7 @@ class Parser:
         node_program = Program(value='PROGRAM')
         tokens = Parser().tokenizer
 
-        while (tokens.next.type != "EOF"):
+        while (tokens.next.type != specials._Type.EOF):
             declaration = Parser().parser_declaration()
 
             # Consumo um \n no final
