@@ -60,51 +60,47 @@ class Parser:
 
     @staticmethod
     def parser_factor() -> Node:
-        '''
-        Verifica a existencia de operadores unários.
-        '''
         tokens = Parser().tokenizer
 
-        if (tokens.next.type == number._Type.INT):
-
+        if (tokens.next.type == types._Type.INT):
             node = IntVal(value=tokens.next.value)
             tokens.select_next()
 
             return node
 
-        elif (tokens.next.type == text._Type.VARIABLE_STR):
+        elif (tokens.next.type == specials._Type.VARIABLE_STR):
             node = StrVal(value=tokens.next.value)
             tokens.select_next()
 
             return node
 
-        elif (tokens.next.type == identifier._Type.IDENTIFIER):
-            node = Identifier(value=tokens.next.value)
-            tokens.select_next()
-
-            if(tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
-                func_call_node = FuncCall(value=node.value)
-                tokens.select_next()
-
-                while(tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
-                    bool_expression = Parser().parse_bool_expression()
-                    func_call_node.add_child(bool_expression)
-
-                    if(tokens.next.type == delimiters._Type.COMMAN):
-                        tokens.select_next()
-                    else:
-                        break
-
-                if (tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
-                    tokens.select_next()
-                    node = func_call_node
-                else:
-                    raise InvalidExpression(f"\n [FACTOR] Expected close parentheses token type | Got {tokens.next}")
+        elif (tokens.next.type == specials._Type.IDENTIFIER):
+            node = Parser().parser_func_call()
+            # node = Identifier(value=tokens.next.value)
+            # tokens.select_next()
+            #
+            # if(tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
+            #     func_call_node = FuncCall(value=node.value)
+            #     tokens.select_next()
+            #
+            #     while(tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
+            #         bool_expression = Parser().parse_bool_expression()
+            #         func_call_node.add_child(bool_expression)
+            #
+            #         if(tokens.next.type == delimiters._Type.COMMAN):
+            #             tokens.select_next()
+            #         else:
+            #             break
+            #
+            #     if (tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
+            #         tokens.select_next()
+            #         node = func_call_node
+            #     else:
+            #         raise InvalidExpression(f"\n [FACTOR] Expected close parentheses token type | Got {tokens.next}")
 
             return node
 
         elif (tokens.next.type == operators._Type.PLUS):
-
             node = UnOp(value=operators._Type.PLUS)
             tokens.select_next()
             child = Parser().parser_factor()
@@ -140,11 +136,11 @@ class Parser:
                 tokens.select_next()
                 return node
             else:
-                raise InvalidExpression(f"\n [FACTOR] Expected close parentheses type | Got {tokens.next}")
+                raise InvalidExpression(f"\n [FACTOR] Expected CLOSE PARENTHESES type | Got {tokens.next}")
 
-        elif(tokens.next.type == functions._Type.SCANLN):
+        elif(tokens.next.type == reserved_word._Type.STDIN):
             tokens.select_next()
-            node = Scanln(value = functions._Type.SCANLN)
+            node = Scanln(value = reserved_word._Type.STDIN)
 
             if (tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
                 tokens.select_next()
@@ -152,19 +148,14 @@ class Parser:
                     tokens.select_next()
                     return node
                 else:
-                    raise InvalidToken(f"\n [FACTOR] Expected close parentheses type | Got {tokens.next}")
+                    raise InvalidToken(f"\n [FACTOR] Expected CLOSE PARENTHESES type | Got {tokens.next}")
             else:
-                raise InvalidToken(f"\n [FACTOR] Expected open parentheses type | Got {tokens.next}")
+                raise InvalidToken(f"\n [FACTOR] Expected OPEN PARENTHESES type | Got {tokens.next}")
         else:
             raise InvalidToken(f"\n [FACTOR] Token type recived : {tokens.next}")
 
     @staticmethod
     def parser_term() -> Node:
-        '''
-            Analisa se a sintaxe está aderente a gramática.
-            Loops de multiplicação e subtração.
-        '''
-
         tokens = Parser().tokenizer
 
         left_node = Parser().parser_factor()
@@ -322,11 +313,6 @@ class Parser:
 
     @staticmethod
     def parse_bool_expression() -> Node:
-        '''
-            Analisa se a sintaxe está aderente a gramática.
-            Loop de OR.
-            Expressões binárias.
-        '''
         tokens = Parser().tokenizer
 
         left_node = Parser().parser_bool_term()
