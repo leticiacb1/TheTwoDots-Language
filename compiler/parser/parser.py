@@ -22,41 +22,54 @@ class Parser:
         node_identifier = Identifier(value=tokens.next.value)
         tokens.select_next()
 
-        if (tokens.next.type == operators._Type.EQUAL):
+        if (tokens.next.type != operators._Type.EQUAL):
+            raise InvalidExpression(f"\n [ASSIGMENT] Expected EQUAL token type | Got {tokens.next}")
+        tokens.select_next()
 
-            tokens.select_next()
+        node_assigment = Assigment(value=operators._Type.EQUAL)
+        node_assigment.add_child(node_identifier)
 
-            bool_expression = Parser().parse_bool_expression()  # Mudo o assigment
-
-            node_assigment = Assigment(value=operators._Type.EQUAL)
-            node_assigment.add_child(node_identifier)  # Left
-            node_assigment.add_child(bool_expression)  # Right
-
-            return node_assigment
-
-        elif(tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
-            tokens.select_next()
-
-            func_call_node = FuncCall(value = node_identifier.value)
-            while(tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
-                bool_expression = Parser().parse_bool_expression()
-                func_call_node.add_child(bool_expression)
-
-                if(tokens.next.type == delimiters._Type.COMMAN):
-                    tokens.select_next()
-                else:
-                    break
-
-            if(tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
-                tokens.select_next()
-            else:
-                raise InvalidExpression(f"\n [STATEMENT] Expected close parentheses token type | Got {tokens.next}")
-
-            return func_call_node
+        if(tokens.next.type == reserved_word._Type.INVOKE):
+            node_func_call = Parser().parser_func_call()
+            node_assigment.add_child(node_func_call)
         else:
-            raise InvalidExpression(f"\n [STATEMENT] Expected assigment token type | Got {tokens.next}")
+            bool_expression = Parser().parse_bool_expression()
+            node_assigment.add_child(bool_expression)
 
-
+        return node_assigment
+        # if (tokens.next.type == operators._Type.EQUAL):
+        #
+        #     tokens.select_next()
+        #
+        #     bool_expression = Parser().parse_bool_expression()  # Mudo o assigment
+        #
+        #     node_assigment = Assigment(value=operators._Type.EQUAL)
+        #     node_assigment.add_child(node_identifier)  # Left
+        #     node_assigment.add_child(bool_expression)  # Right
+        #
+        #     return node_assigment
+        #
+        # elif(tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
+        #     tokens.select_next()
+        #
+        #     func_call_node = FuncCall(value = node_identifier.value)
+        #     while(tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
+        #         bool_expression = Parser().parse_bool_expression()
+        #         func_call_node.add_child(bool_expression)
+        #
+        #         if(tokens.next.type == delimiters._Type.COMMAN):
+        #             tokens.select_next()
+        #         else:
+        #             break
+        #
+        #     if(tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
+        #         tokens.select_next()
+        #     else:
+        #         raise InvalidExpression(f"\n [STATEMENT] Expected close parentheses token type | Got {tokens.next}")
+        #
+        #     return func_call_node
+        # else:
+        #     raise InvalidExpression(f"\n [STATEMENT] Expected assigment token type | Got {tokens.next}")
 
     @staticmethod
     def parser_factor() -> Node:
