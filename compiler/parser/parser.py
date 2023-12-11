@@ -403,31 +403,51 @@ class Parser:
 
             node = node_if
 
-        elif (tokens.next.type == functions._Type.FOR):
+        elif (tokens.next.type == reserved_word._Type.FOR):
             tokens.select_next()
-            init_state = Parser().parser_assigment()
 
-            if(tokens.next.type == delimiters._Type.SEMICOLON):
-                tokens.select_next()
-                condition = Parser().parse_bool_expression()
+            if (tokens.next._type != delimiters._Type.TWO_DOTS):
+                raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
+            tokens.select_next()
 
-                if (tokens.next.type == delimiters._Type.SEMICOLON):
-                    tokens.select_next()
-                    incremet = Parser().parser_assigment()
-                    block    = Parser().block()
+            if (tokens.next._type != delimiters._Type.OPEN_PARENTHESES):
+                raise InvalidExpression(f"\n [STATEMENT] Expected OPEN PARENTHESES type | Got {tokens.next}")
+            tokens.select_next()
 
-                    node_for = For(value = functions._Type.FOR)
-                    node_for.add_child(init_state)
-                    node_for.add_child(condition)
-                    node_for.add_child(incremet)
-                    node_for.add_child(block)
+            condition = Parser().parse_bool_expression()
 
-                    node = node_for
+            if (tokens.next._type != delimiters._Type.CLOSE_PARENTHESES):
+                raise InvalidExpression(f"\n [STATEMENT] Expected CLOSE PARENTHESES type | Got {tokens.next}")
+            tokens.select_next()
 
-                else:
-                    raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
-            else:
-                raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
+            block = Parser().block()
+
+            node_for = For(value=reserved_word._Type.FOR)
+            node_for.add_child(condition)
+            node_for.add_child(block)
+
+            # init_state = Parser().parser_assigment()
+            # if(tokens.next.type == delimiters._Type.SEMICOLON):
+            #     tokens.select_next()
+            #     condition = Parser().parse_bool_expression()
+            #
+            #     if (tokens.next.type == delimiters._Type.SEMICOLON):
+            #         tokens.select_next()
+            #         incremet = Parser().parser_assigment()
+            #         block    = Parser().block()
+            #
+            #         node_for = For(value = functions._Type.FOR)
+            #         node_for.add_child(init_state)
+            #         node_for.add_child(condition)
+            #         node_for.add_child(incremet)
+            #         node_for.add_child(block)
+            #
+            #         node = node_for
+            #
+            #     else:
+            #         raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
+            # else:
+            #     raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
         elif (tokens.next.type == functions._Type.VAR):
             # Var | identifier | type | = BExpression
             tokens.select_next()
