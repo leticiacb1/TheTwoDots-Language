@@ -475,11 +475,11 @@ class Parser:
 
                     node = var_dec_node
                 else:
-                    raise InvalidExpression(f"\n [STATEMENT] Expected 'type' type | Got {tokens.next}")
+                    raise InvalidExpression(f"\n [STATEMENT] Expected INT/STR type | Got {tokens.next}")
             else:
-                raise InvalidExpression(f"\n [STATEMENT] Expected identifier type | Got {tokens.next}")
+                raise InvalidExpression(f"\n [STATEMENT] Expected IDENTIFIER type | Got {tokens.next}")
 
-        elif (tokens.next.type == functions._Type.RETURN):
+        elif (tokens.next.type == reserved_word._Type.RETURN):
             tokens.select_next()
 
             bool_expression = Parser().parse_bool_expression()
