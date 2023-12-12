@@ -4,72 +4,73 @@ Bem-vindo ao emocionante mundo da programação simplificada e intuitiva com a l
 
 Como o nome sugere, esta linguagem utiliza extensivamente o caractere ":" para melhorar a legibilidade e a eficiência do seu código. O "TwoDots" foi desenvolvido com o objetivo de tornar a codificação mais acessível e compreensível, especialmente para iniciantes na programação.
 
-Linguagem que se inspira em várias linguagens de programação amplamente conhecidas, buscando incorporar as melhores características de cada uma, enquanto mantém um foco na simplicidade e legibilidade do código. 
+Linguagem que se inspira em várias linguagens de programação amplamente conhecidas, buscando incorporar as características que eu mais gosto de cada uma, enquanto mantém um foco na simplicidade e legibilidade do código. 
 
 Algumas linguagens que foram utilizadas de inspiração : Python , JavaScript , Java , C/C++/C#.
 
-## 📌️ Examples of structures
+## 📌️ Exemplos de uso
 
 #### Variable and Constants
 
 ```python
-# Declarando variável
-declare x : integer = 2
-declare y : string = "y"
-declare z : integer
-
+# Comentário aqui
+create main() : integer = {
+    declare x : integer = 2
+    declare y : string
+    y = "y"
+}
 ```
 #### Math operations
 ```python
-
-declare x : integer = 2
-
-x = x + 2 
-
+create main() : integer = {
+    declare x : integer
+    x = 2 * 2 / 2 - 2       # x = 0
+}
 ```
 
 #### Create and use function
 
 ```python
-
-# Criando uma função
-create function_name ( args ) : integer = {
-  stdout : " Nothing here "
-  return 0 
+create soma ( x : integer , y : integer ) : integer = {
+  return x + y
 }
 
-# Usando função
-invoke : function_name()
+create main() : integer = {
 
-# Pegando retorno da função
-declare x : integer
-x = invoke : function_name( args )
+    declare x : integer = 2
+    declare y : integer = 4
+
+    declare z : integer
+    z = invoke : soma(x,y)
+
+    stdout : z       # z = 6
+}
 
 ```
 
 #### Conditional Block
 ```python
-
-if : ( x == 2) = {
-  # If block
-  stdout : " X é igual a 2" 
-} : {
-  # Else block
-  stdout : "X não é igual a 2"
-} 
-
+create main() : integer = {
+    declare x : integer = 2
+    if : ( x == 2) = {
+      stdout : "Deve printar" 
+    } : {
+      stdout : "Não deve printar"
+    }
+}
 ```
 
 #### Loops
 
 ```python
+create main() : integer = {
+    declare i : integer = 0
 
-declare i : integer = 0
-
-loop : ( i < 5) = {
-  i  = i + 1
+    loop : ( i < 5) {
+      i  = i + 1
+      stdout : i
+    }
 }
-
 ```
 
 #### Build-in function
@@ -79,11 +80,64 @@ loop : ( i < 5) = {
 # Output
 stdout  : "Display in screen"
 
-# Input do teclado deve ser inteiro nesse exemplo
+# Input
 declare x : integer
 x = stdin()
 
 ```
+
+## ⚙️ Como utilizar
+
+1. **Flex-Bison**
+
+Na pasta `FlexBison` é possível encontrar um arquivo `makefile` que permitirá a verificação da linguagem do arquivo `input.td`.
+
+Para rodar, siga as instruções a seguir:
+
+```bash
+# Apaga arquivo anteriormente gerados 
+$ make clean 
+
+# Compilação
+$ make
+
+# Passa para o executavel o arquivo input.td
+$ make execute
+```
+
+2. **Interpreter**
+
+O arquivo`run_compiler.sh` realiza os testes do compilador (pasta `compiler`) passando como input os arquivos escritos na linguagem TwoDots (pasta `scripts`).
+
+Garanta que o arquivo `run_compiler.sh` é um executável.
+
+```bash
+# Torna o arquivo executável
+$ chmod +x run_compiler.sh
+```
+
+Para rodar, siga as instruções a seguir:
+
+```bash
+# Input = test_function.td
+$ ./run_compiler.sh test_function
+
+# Input = test_if.td
+$ ./run_compiler.sh test_if
+
+# Input = test_loop.td
+$ ./run_compiler.sh test_loop
+
+# Input = test_stdout_tdin.td
+$ ./run_compiler.sh test_in_out
+
+# Caso deseje realizar todos os testes de uma vez, apenas execute:
+$ ./run_compiler.sh
+```
+
+## 📌️ Diagrama
+
+<img alt = "Diagrama da linguagem" src= "TwoDots.png"/>
 
 ## 🎯️ EBNF
 
@@ -120,7 +174,3 @@ Letter                  = ( a | ... | z | A | ... | Z ) ;
 Digit                   = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 
 ```
-
-## 📊️ Diagram
-
-<img src="TwoDots_diagrama.png" />

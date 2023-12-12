@@ -4,7 +4,7 @@ CFLAGS = -Wall
 
 # Executable Output
 TARGET = twodots
-INPUT_FILE = input.txt
+INPUT_FILE = input.td
 
 # Source files
 LEX_FILE = twodots.l
