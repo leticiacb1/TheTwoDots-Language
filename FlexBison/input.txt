@@ -1,6 +1,5 @@
 declare x:integer = 1
-declare y:string = ""
-declare z:boolean
+declare y:string
 
 if : ( x > 2 ) {
     stdout : "Hello World"

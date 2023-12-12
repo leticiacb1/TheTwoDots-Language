@@ -122,7 +122,6 @@ statement_list : STATEMENT
 /* ----- Variable ----- */
 types : INT
       | STR
-      | BOOL
       ;
 
 declare_variable: DECLARE IDENTIFIER TWO_DOTS types

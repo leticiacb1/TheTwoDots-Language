@@ -37,7 +37,6 @@ identifier  [A-z_][A-z0-9_]*
 "declare"       {printf("\n [LEX] DECLARE =  %s\n", yytext); return DECLARE;}
 "integer"       {printf("\n [LEX] INT =  %s\n", yytext); return INT;}
 "string"        {printf("\n [LEX] STR =  %s\n", yytext); return STR;}
-"boolean"       {printf("\n [LEX] BOOL =  %s\n", yytext); return BOOL;}
 
 "create"        {printf("\n [LEX] CREATE =  %s\n", yytext); return CREATE;}
 "invoke"        {printf("\n [LEX] INVOKE =  %s\n", yytext); return INVOKE;}
