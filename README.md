@@ -4,9 +4,13 @@ Bem-vindo ao emocionante mundo da programação simplificada e intuitiva com a l
 
 Como o nome sugere, esta linguagem utiliza extensivamente o caractere ":" para melhorar a legibilidade e a eficiência do seu código. O "TwoDots" foi desenvolvido com o objetivo de tornar a codificação mais acessível e compreensível, especialmente para iniciantes na programação.
 
-Linguagem que se inspira em várias linguagens de programação amplamente conhecidas, buscando incorporar as características que eu mais gosto de cada uma, enquanto mantém um foco na simplicidade e legibilidade do código. 
+A "TwoDots" se inspira em várias outras linguagens amplamente reconhecidas, buscando incorporar as características que eu mais gosto de cada uma, enquanto mantém um foco na simplicidade e legibilidade do código. 
 
 Algumas linguagens que foram utilizadas de inspiração : Python , JavaScript , Java , C/C++/C#.
+
+<div align = "center">
+    <img alt="apresentation" src="apresentation.png" width="700rm" />
+</div>
 
 ## 📌️ Exemplos de uso
 
@@ -128,7 +132,7 @@ $ ./run_compiler.sh test_if
 # Input = test_loop.td
 $ ./run_compiler.sh test_loop
 
-# Input = test_stdout_tdin.td
+# Input = test_stdout_stdin.td
 $ ./run_compiler.sh test_in_out
 
 # Caso deseje realizar todos os testes de uma vez, apenas execute:
