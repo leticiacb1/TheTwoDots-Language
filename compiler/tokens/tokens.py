@@ -56,7 +56,7 @@ class Token:
                 return f" [TOKEN] ( '{self.type}' , 'CONCAT')\n"
 
     def _reserved_token(self) -> str:
-        return f" [TOKEN] ('{type}' , 'RESERVED')\n"
+        return f" [TOKEN] ('{self.type}' , 'RESERVED')\n"
 
     def _specials_token(self) -> str:
         match self.type:
@@ -90,8 +90,8 @@ class Token:
             return self._operator_token()
 
 
-        if self.type in [reserved_word._Type.IF, reserved_word._Type.ELSE, reserved_word._Type.FOR,
-                         reserved_word._Type.PRINT, reserved_word._Type.INPUT,
+        if self.type in [reserved_word._Type.IF, reserved_word._Type.FOR,
+                         reserved_word._Type.STDOUT, reserved_word._Type.STDIN,
                          reserved_word._Type.DECLARE, reserved_word._Type.CREATE, reserved_word._Type.INVOKE,
                          reserved_word._Type.RETURN]:
             return self._reserved_token()
@@ -100,5 +100,5 @@ class Token:
                          specials._Type.VARIABLE_STR, specials._Type.INVALID]:
             return self._specials_token()
 
-        if self.type in [types._Type.INT , types._Type.STR , types._Type.BOOL]:
+        if self.type in [types._Type.INT , types._Type.STR]:
             return self._types_token()

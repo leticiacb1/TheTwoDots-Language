@@ -10,4 +10,4 @@ class IntVal(Node):
         super().__init__(value)
 
     def evaluate(self, symbol_table) -> (int, str):
-        return self.value, types.TYPE_INT
+        return self.value, types._Type.INT

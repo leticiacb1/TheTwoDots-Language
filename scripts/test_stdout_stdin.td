@@ -6,14 +6,14 @@ create main() : integer = {
     declare w : integer
     declare z : integer
 
-    z = 10 *2 --2 /2    # z = 11
+    z = 10 *1 --2 /2    # z = 11
 
-    w = sdtin()
+    w = stdin()
     stdout : " Valor de w : "
     stdout : w
 
-    if : ( z == 11 ) = {
+    if : ( z == 11 ) {
       # Bloco if
-      stdout : " Z é igual a 2"
+      stdout : " Z é igual a 11"
     }
 }

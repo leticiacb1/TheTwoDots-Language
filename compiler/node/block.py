@@ -16,6 +16,7 @@ statement   statement          statement
         super().__init__(value)
 
     def evaluate(self, symbol_table):
+        result = None
         for child in self.children:
             if child.value != 'END_OF_LINE':
                 result = child.evaluate(symbol_table)

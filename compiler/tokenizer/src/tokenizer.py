@@ -18,12 +18,11 @@ class Tokenizer:
             'invoke'  : {'type': reserved_word._Type.INVOKE, 'value': reserved_word._Value.RESERVED},
             'return'  : {'type': reserved_word._Type.RETURN, 'value': reserved_word._Value.RESERVED},
             'if': {'type': reserved_word._Type.IF, 'value': reserved_word._Value.RESERVED},
-            'for': {'type': reserved_word._Type.FOR, 'value': reserved_word._Value.RESERVED},
+            'loop': {'type': reserved_word._Type.FOR, 'value': reserved_word._Value.RESERVED},
             'stdout': {'type': reserved_word._Type.STDOUT, 'value': reserved_word._Value.RESERVED},
             'stdin': {'type': reserved_word._Type.STDIN, 'value': reserved_word._Value.RESERVED},
             'integer': {'type': types._Type.INT, 'value': types._Value.TYPES},
-            'string': {'type': types._Type.STR, 'value': types._Value.TYPES},
-            'boolean': {'type': types._Type.BOOL, 'value': types._Value.TYPES}
+            'string': {'type': types._Type.STR, 'value': types._Value.TYPES}
         }
     def _get_number_token(self):
         value_str = ''

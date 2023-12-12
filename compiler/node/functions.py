@@ -41,13 +41,11 @@ class If(Node):
         conditional = self.children[0]
         block_if    = self.children[1]
 
-        if(conditional.evaluate(symbol_table)):
+        if(conditional.evaluate(symbol_table)[0]):
             block_if.evaluate(symbol_table)
         elif(len(self.children) > 2):
             #Bloco else
-
-            if (not conditional.evaluate(symbol_table)):
-                self.children[2].evaluate(symbol_table)
+            self.children[2].evaluate(symbol_table)
 
 class For(Node):
     '''
@@ -64,17 +62,12 @@ class For(Node):
 
     def evaluate(self, symbol_table) -> None:
 
-        self.children[0].evaluate(symbol_table)
-        condition  = self.children[1]
-        increment  = self.children[2]
-        block      = self.children[3]
+        condition  = self.children[0]
+        block      = self.children[1]
 
-        value, type = condition.evaluate(symbol_table)
-        while value:
+        while condition.evaluate(symbol_table)[0]:
             block.evaluate(symbol_table)
-            increment.evaluate(symbol_table)
 
-            value, type = condition.evaluate(symbol_table)
 
 class Scanln(Node):
     '''
@@ -90,6 +83,6 @@ class Scanln(Node):
 
         # Número
         if(number.isnumeric()):
-            return int(number), types.TYPE_INT
+            return int(number), types._Type.INT
 
         raise InvalidType(f" [SCANLN - EVALUATE] Only the integer type is accepted in the Scanln function. Tried type: {type(number)}")

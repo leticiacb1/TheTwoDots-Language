@@ -1,5 +1,5 @@
 create main() : integer = {
-    declare x : integer = 2;
+    declare x : integer = 2
 
     if : ( x == 3) {
       # Bloco if

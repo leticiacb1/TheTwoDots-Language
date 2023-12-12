@@ -22,21 +22,20 @@ class Parser:
         node_identifier = Identifier(value=tokens.next.value)
         tokens.select_next()
 
-        if (tokens.next.type != operators._Type.EQUAL):
-            raise InvalidExpression(f"\n [ASSIGMENT] Expected EQUAL token type | Got {tokens.next}")
-        tokens.select_next()
+        if (tokens.next.type == operators._Type.EQUAL):
+            tokens.select_next()
 
-        node_assigment = Assigment(value=operators._Type.EQUAL)
-        node_assigment.add_child(node_identifier)
-
-        if(tokens.next.type == reserved_word._Type.INVOKE):
-            node_func_call = Parser().parser_func_call()
-            node_assigment.add_child(node_func_call)
+            node = Assigment(value=operators._Type.EQUAL)
+            node.add_child(node_identifier)
+            if(tokens.next.type == reserved_word._Type.INVOKE):
+                node_func_call = Parser().parser_func_call()
+                node.add_child(node_func_call)
+            else:
+                bool_expression = Parser().parse_bool_expression()
+                node.add_child(bool_expression)
         else:
-            bool_expression = Parser().parse_bool_expression()
-            node_assigment.add_child(bool_expression)
-
-        return node_assigment
+            node = node_identifier
+        return node
 
     @staticmethod
     def parser_func_call() -> Node:
@@ -46,18 +45,18 @@ class Parser:
             raise InvalidExpression(f"\n [FUNC CALL] Expected INVOKE token type | Got {tokens.next}")
         tokens.select_next()
 
-        if (tokens.next._type != delimiters._Type.TWO_DOTS):
+        if (tokens.next.type != delimiters._Type.TWO_DOTS):
             raise InvalidExpression(f"\n [FUNC CALL] Expected TWO DOTS type | Got {tokens.next}")
         tokens.select_next()
 
-        if(tokens.next._type != specials._Type.IDENTIFIER):
+        if(tokens.next.type != specials._Type.IDENTIFIER):
             raise InvalidExpression(f"\n [FUNC CALL] Expected IDENTIFIER type | Got {tokens.next}")
         node_identifier = Identifier(value=tokens.next.value)
         tokens.select_next()
 
         func_call_node = FuncCall(value=node_identifier.value)
 
-        if (tokens.next._type != delimiters._Type.OPEN_PARENTHESES):
+        if (tokens.next.type != delimiters._Type.OPEN_PARENTHESES):
             raise InvalidExpression(f"\n [FUNC CALL] Expected close parentheses token type | Got {tokens.next}")
         tokens.select_next()
 
@@ -65,7 +64,7 @@ class Parser:
             bool_expression = Parser().parse_bool_expression()
             func_call_node.add_child(bool_expression)
 
-            if(tokens.next.type == delimiters._Type.COMMAN):
+            if(tokens.next.type == delimiters._Type.COMMA):
                 tokens.select_next()
             else:
                 break
@@ -93,7 +92,7 @@ class Parser:
             return node
 
         elif (tokens.next.type == specials._Type.IDENTIFIER):
-            node = Parser().parser_func_call()
+            node = Parser().parser_assigment()
             return node
 
         elif (tokens.next.type == operators._Type.PLUS):
@@ -156,10 +155,10 @@ class Parser:
 
         left_node = Parser().parser_factor()
 
-        while (tokens.next.type in [operators._Type.TIMES, operators._Type.BAR]):
+        while (tokens.next.type in [operators._Type.MULT, operators._Type.DIV]):
 
-            if (tokens.next.type == operators._Type.TIMES):
-                op_node = BinOp(operators._Type.TIMES)
+            if (tokens.next.type == operators._Type.MULT):
+                op_node = BinOp(operators._Type.MULT)
                 op_node.add_child(left_node)
 
                 tokens.select_next()
@@ -169,8 +168,8 @@ class Parser:
 
                 left_node = op_node
 
-            elif (tokens.next.type == operators._Type.BAR):
-                op_node = BinOp(operators._Type.BAR)
+            elif (tokens.next.type == operators._Type.DIV):
+                op_node = BinOp(operators._Type.DIV)
                 op_node.add_child(left_node)
 
                 tokens.select_next()
@@ -345,7 +344,7 @@ class Parser:
         elif (tokens.next.type == reserved_word._Type.STDOUT):
             tokens.select_next()
 
-            if(tokens.next._type != delimiters._Type.TWO_DOTS):
+            if(tokens.next.type != delimiters._Type.TWO_DOTS):
                 raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
             tokens.select_next()
 
@@ -358,17 +357,17 @@ class Parser:
         elif(tokens.next.type == reserved_word._Type.IF):
             tokens.select_next()
 
-            if (tokens.next._type != delimiters._Type.TWO_DOTS):
+            if (tokens.next.type != delimiters._Type.TWO_DOTS):
                 raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
             tokens.select_next()
 
-            if (tokens.next._type != delimiters._Type.OPEN_PARENTHESES):
+            if (tokens.next.type != delimiters._Type.OPEN_PARENTHESES):
                 raise InvalidExpression(f"\n [STATEMENT] Expected OPEN PARENTHESES type | Got {tokens.next}")
             tokens.select_next()
 
             bool_expression = Parser().parse_bool_expression()
 
-            if (tokens.next._type != delimiters._Type.CLOSE_PARENTHESES):
+            if (tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
                 raise InvalidExpression(f"\n [STATEMENT] Expected CLOSE PARENTHESES type | Got {tokens.next}")
             tokens.select_next()
 
@@ -388,17 +387,17 @@ class Parser:
         elif (tokens.next.type == reserved_word._Type.FOR):
             tokens.select_next()
 
-            if (tokens.next._type != delimiters._Type.TWO_DOTS):
+            if (tokens.next.type != delimiters._Type.TWO_DOTS):
                 raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
             tokens.select_next()
 
-            if (tokens.next._type != delimiters._Type.OPEN_PARENTHESES):
+            if (tokens.next.type != delimiters._Type.OPEN_PARENTHESES):
                 raise InvalidExpression(f"\n [STATEMENT] Expected OPEN PARENTHESES type | Got {tokens.next}")
             tokens.select_next()
 
             condition = Parser().parse_bool_expression()
 
-            if (tokens.next._type != delimiters._Type.CLOSE_PARENTHESES):
+            if (tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
                 raise InvalidExpression(f"\n [STATEMENT] Expected CLOSE PARENTHESES type | Got {tokens.next}")
             tokens.select_next()
 
@@ -407,6 +406,7 @@ class Parser:
             node_for = For(value=reserved_word._Type.FOR)
             node_for.add_child(condition)
             node_for.add_child(block)
+            node = node_for
 
         elif (tokens.next.type == reserved_word._Type.DECLARE):
             tokens.select_next()
@@ -416,7 +416,7 @@ class Parser:
                 node_identifier = Identifier(value=tokens.next.value)
                 tokens.select_next()
 
-                if (tokens.next._type != delimiters._Type.TWO_DOTS):
+                if (tokens.next.type != delimiters._Type.TWO_DOTS):
                     raise InvalidExpression(f"\n [STATEMENT] Expected TWO DOTS type | Got {tokens.next}")
                 tokens.select_next()
 
@@ -430,6 +430,7 @@ class Parser:
 
                     if (tokens.next.type == operators._Type.EQUAL):
                         tokens.select_next()
+
                         bool_expression = Parser().parse_bool_expression()
                         var_dec_node.add_child(bool_expression)
 
@@ -508,6 +509,10 @@ class Parser:
                             node_identifier = Identifier(value=tokens.next.value)
                             tokens.select_next()
 
+                            if (tokens.next.type != delimiters._Type.TWO_DOTS):
+                                raise InvalidExpression(f"\n [DECLARATION] Expected TWO DOTS type | Got {tokens.next}")
+                            tokens.select_next()
+
                             if(tokens.next.type == types._Type.INT or tokens.next.type == types._Type.STR):
                                 _type = tokens.next.type
 
@@ -517,7 +522,7 @@ class Parser:
 
                                 tokens.select_next()
 
-                                if (tokens.next.type == delimiters._Type.COMMAN):
+                                if (tokens.next.type == delimiters._Type.COMMA):
                                     tokens.select_next()
                                 else:
                                     break

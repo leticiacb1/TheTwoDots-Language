@@ -10,4 +10,4 @@ class StrVal(Node):
         super().__init__(value)
 
     def evaluate(self, symbol_table) -> (int, str):
-        return self.value, types.TYPE_STR
+        return self.value, types._Type.STR

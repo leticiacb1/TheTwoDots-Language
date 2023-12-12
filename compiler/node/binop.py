@@ -18,8 +18,8 @@ class BinOp(Node):
             value1 , type1 =  self.children[0].evaluate(symbol_table)
             value2 , type2 =  self.children[1].evaluate(symbol_table)
 
-            if( (type1 == types.TYPE_INT) and (type2 == types.TYPE_INT) ):
-                return value1 + value2, types.TYPE_INT
+            if( (type1 == types._Type.INT) and (type2 == types._Type.INT) ):
+                return value1 + value2, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in + operation : {type1} + {type2}")
 
@@ -28,26 +28,26 @@ class BinOp(Node):
             value2 , type2 = self.children[1].evaluate(symbol_table)
 
 
-            if ((type1 == types.TYPE_INT) and (type2 == types.TYPE_INT)):
-                return value1 - value2, types.TYPE_INT
+            if ((type1 == types._Type.INT) and (type2 == types._Type.INT)):
+                return value1 - value2, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in - operation : {type1} - {type2}")
 
-        if (self.value == operators._Type.BAR):
+        if (self.value == operators._Type.DIV):
             value1, type1 = self.children[0].evaluate(symbol_table)
             value2, type2 = self.children[1].evaluate(symbol_table)
 
-            if ((type1 == types.TYPE_INT) and (type2 == types.TYPE_INT)):
-                return value1//value2, types.TYPE_INT
+            if ((type1 == types._Type.INT) and (type2 == types._Type.INT)):
+                return value1//value2, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in / operation : {type1} / {type2}")
 
-        if (self.value == operators._Type.TIMES):
+        if (self.value == operators._Type.MULT):
             value1, type1 = self.children[0].evaluate(symbol_table)
             value2, type2 = self.children[1].evaluate(symbol_table)
 
-            if ((type1 == types.TYPE_INT) and (type2 == types.TYPE_INT)):
-                return value1 * value2, types.TYPE_INT
+            if ((type1 == types._Type.INT) and (type2 == types._Type.INT)):
+                return value1 * value2, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in * operation : {type1} * {type2}")
 
@@ -55,10 +55,10 @@ class BinOp(Node):
             value1, type1 = self.children[0].evaluate(symbol_table)
             value2, type2 = self.children[1].evaluate(symbol_table)
 
-            if ((type1 == types.TYPE_INT) and (type2 == types.TYPE_INT)):
+            if ((type1 == types._Type.INT) and (type2 == types._Type.INT)):
                 if(value1 or value2):
-                    return 1, types.TYPE_INT
-                return 0, types.TYPE_INT
+                    return 1, types._Type.INT
+                return 0, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in OR operation : {type1} or {type2}")
 
@@ -66,10 +66,10 @@ class BinOp(Node):
             value1, type1 = self.children[0].evaluate(symbol_table)
             value2, type2 = self.children[1].evaluate(symbol_table)
 
-            if ((type1 == types.TYPE_INT) and (type2 == types.TYPE_INT)):
+            if ((type1 == types._Type.INT) and (type2 == types._Type.INT)):
                 if(value1 and value2):
-                    return 1, types.TYPE_INT
-                return 0, types.TYPE_INT
+                    return 1, types._Type.INT
+                return 0, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in AND operation : {type1} and {type2}")
 
@@ -79,8 +79,8 @@ class BinOp(Node):
 
             if (type1 == type2):
                 if(value1 > value2):
-                    return 1, types.TYPE_INT
-                return 0, types.TYPE_INT
+                    return 1, types._Type.INT
+                return 0, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in > operation : {type1} > {type2}")
 
@@ -90,8 +90,8 @@ class BinOp(Node):
 
             if (type1 == type2):
                 if (value1 < value2):
-                    return 1, types.TYPE_INT
-                return 0, types.TYPE_INT
+                    return 1, types._Type.INT
+                return 0, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in < operation : {type1} < {type2}")
 
@@ -101,8 +101,8 @@ class BinOp(Node):
 
             if (type1 == type2):
                 if (value1 == value2):
-                    return 1, types.TYPE_INT
-                return 0, types.TYPE_INT
+                    return 1, types._Type.INT
+                return 0, types._Type.INT
 
             raise IncompatibleTypes(f" [Binop - Evaluate] Incompatible Types find in == operation : {type1} == {type2}")
 
@@ -110,6 +110,6 @@ class BinOp(Node):
             value1, type1 = self.children[0].evaluate(symbol_table)
             value2, type2 = self.children[1].evaluate(symbol_table)
 
-            return str(value1) + str(value2) , types.TYPE_STR
+            return str(value1) + str(value2) , types._Type.STR
 
         raise InvalidType(f" [Binop - Evaluate] Invalid Type find : {self.value}")
