@@ -139,7 +139,7 @@ $ ./run_compiler.sh test_in_out
 $ ./run_compiler.sh
 ```
 
-## 📌️ Diagrama
+## 🧮️ Diagrama
 
 <img alt = "Diagrama da linguagem" src= "TwoDots.png"/>
 
