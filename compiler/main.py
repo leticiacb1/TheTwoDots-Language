@@ -1,8 +1,10 @@
+
+from compiler.parser import Parser
+from compiler.prepro import PrePro
+from compiler.table.symbol_table import SymbolTable
+from compiler.constants import delimiters
+
 import sys
-from parser import Parser
-from prepro import PrePro
-from table.symbol_table import SymbolTable
-from constants import delimiters
 
 def load_file(filename) -> list[str]:
     with open(filename, "r") as f:
@@ -10,8 +12,11 @@ def load_file(filename) -> list[str]:
     return lines
 
 if __name__ == '__main__':
-    
-    #Lê o aruqivo passado na linha de comando
+
+    if len(sys.argv) < 2:
+        print(f"\n [ERROR] Usage: python3 main.py <filename> | Got {sys.argv} \n")
+        sys.exit(1)
+
     filename = (sys.argv)[1:]
     source_code_lines = load_file(filename[0])
 

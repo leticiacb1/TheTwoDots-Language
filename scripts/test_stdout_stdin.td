@@ -8,6 +8,7 @@ create main() : integer = {
 
     z = 10 *1 --2 /2    # z = 11
 
+    stdout : " Digite um valor para w : "
     w = stdin()
     stdout : " Valor de w : "
     stdout : w
