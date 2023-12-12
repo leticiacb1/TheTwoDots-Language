@@ -4,7 +4,7 @@ from compiler.errors.parser import InvalidExpression
 from compiler.errors.tokens import InvalidToken
 from compiler.node import (IntVal, StrVal, VarDec, FuncDec,
                            BinOp, UnOp, NoOp, Identifier, Assigment,
-                           Node, Println , Scanln, If , For, Block ,
+                           Node, Stdout , Stdin, If , Loop, Block ,
                            Program , Return, FuncCall)
 
 class Parser:
@@ -135,7 +135,7 @@ class Parser:
 
         elif(tokens.next.type == reserved_word._Type.STDIN):
             tokens.select_next()
-            node = Scanln(value = reserved_word._Type.STDIN)
+            node = Stdin(value = reserved_word._Type.STDIN)
 
             if (tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
                 tokens.select_next()
@@ -350,7 +350,7 @@ class Parser:
 
             bool_expression = Parser().parse_bool_expression()
 
-            node_println = Println(value=reserved_word._Type.STDOUT)
+            node_println = Stdout(value=reserved_word._Type.STDOUT)
             node_println.add_child(bool_expression)
             node = node_println
 
@@ -403,7 +403,7 @@ class Parser:
 
             block = Parser().block()
 
-            node_for = For(value=reserved_word._Type.FOR)
+            node_for = Loop(value=reserved_word._Type.FOR)
             node_for.add_child(condition)
             node_for.add_child(block)
             node = node_for

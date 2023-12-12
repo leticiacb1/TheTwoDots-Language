@@ -1,7 +1,8 @@
 create main() : integer = {
     declare i : integer = 0
 
-    stdout : "Valores de i no loop :"
+    declare j : string = "Valores de i no loop :"
+    stdout : j
 
     loop : ( i < 5) {
       i  = i + 1

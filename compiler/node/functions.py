@@ -2,7 +2,7 @@ from .node import Node
 from compiler.constants import types
 from compiler.errors.types import InvalidType
 
-class Println(Node):
+class Stdout(Node):
     '''
     Função println (Golang).
     Possui um filho.
@@ -25,7 +25,7 @@ class Println(Node):
 
 class If(Node):
     '''
-    Função if (Golang).
+    Função if.
     Possui 2 or 3 filhos (quando possuimos um else).
 
                  ________ If__________
@@ -47,14 +47,14 @@ class If(Node):
             #Bloco else
             self.children[2].evaluate(symbol_table)
 
-class For(Node):
+class Loop(Node):
     '''
-    Função for (Golang).
-    Possui 4 filhos.
+    Função Loop (Golang).
+    Possui 2 filhos.
 
-                 ________ For ________________
-               /          |           \       \
-    Init state     condition      increment    block
+                 ___ For ______
+               /               \
+            condition         block
     '''
 
     def __init__(self, value):
@@ -69,9 +69,9 @@ class For(Node):
             block.evaluate(symbol_table)
 
 
-class Scanln(Node):
+class Stdin(Node):
     '''
-    Função Scanln (Golan
+    Função Stdin
     Não possui filhos.
     '''
 

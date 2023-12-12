@@ -6,7 +6,7 @@ from .noop        import NoOp
 from .node        import Node
 from .block       import Block
 from .assigment   import Assigment
-from .functions   import Println , If , For , Scanln
+from .functions   import Stdout , If , Loop , Stdin
 from .identifier  import Identifier
 from .program     import Program
 from .vardec      import VarDec
