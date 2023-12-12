@@ -143,8 +143,24 @@ $ ./run_compiler.sh
 
 ```mysql
 
-PROGRAM                 = {STATEMENT}
-STATEMENT               = "\n" , ASSIGMENT , STDOUT , STDIN , IF , LOOP , VARIABLES , CREATE , INVOKE
+PROGRAM                 = { DECLARATION }
+DECLARATION             = "create" , Identifier , args_declaration , ":" , types , "=" , BLOCK
+
+types                   = ("string" | "integer")
+args_declaration        = (  λ | Identifier , ":" , types , ","  args_declaration |  Identifier , ":" , types )
+
+STATEMENT               = "\n" , ASSIGMENT , STDOUT , IF , LOOP , VARIABLES , RETURN 
+
+ASSIGMENT               = Identifier |  Identifier "=" , (BOOL_EXPRESSION | PARSER_FUNC_CALL)
+PARSER_FUNC_CALL        = "invoke" , ":" , Identifier , "(" , args_received , ")"
+
+args_received           = (  λ | Identifier , ","  args_received |  Identifier )
+
+STDOUT                  = "stdout" , ":" , BOOL_EXPRESSION
+IF                      = "if" , ":" , "(" , BOOL_EXPRESSION , ")"  , BLOCK , ":" , BLOCK
+LOOP                    = "loop" , ":" , "(" , BOOL_EXPRESSION , ")" , BLOCK
+VARIABLES               = "declare" ,  Identifier , ":" ,  types , ( "=" , BOOL_EXPRESSION | λ)
+RETURN                  = "return" , BOOL_EXPRESSION
 
 BOOL_EXPRESSION         = BOOL_TERM , { "or", BOOL_TERM } ;
 BOOL_TERM               = RL_EXPRESSION , { "and", RL_EXPRESSION } ;
@@ -152,20 +168,10 @@ RL_EXPRESSION           = EXPRESSION, { ("==" | ">" | "<"), EXPRESSION } ;
 
 EXPRESSION              = TERM, { ("+" | "-" | "."), TERM } ;
 TERM                    = FACTOR , { ("*" | "/"), FACTOR } ;
-FACTOR                  = Number | String | Identifier | (("+" | "-" | "!"), FACTOR) ;
-
-STDOUT                  = "stdout" , ":" , BOOL_EXPRESSION
-STDIN                   = "stdin"  , ":" , Identifier
-
-ASSIGMENT               = Identifier , "=" , BOOL_EXPRESSION 
-VARIABLES               = "declare" , "constant") , Identifier , ":" ,  ("integer" | "string") , (BOOL_EXPRESSION | λ)
-IF                      = "if" , ":" , "(" , BOOL_EXPRESSION , ")" , "=" , BLOCK , ":" , "BLOCK"
-LOOP                    = "loop" , ":" , "(" , BOOL_EXPRESSION , ")" , "=" , "{" , BLOCK , "}"
-CREATE                  = "create" ,  string ,  "(" , args , ")" ,  ":" ,  ("integer" | "string") , "=" , FUNCTION_BLOCK
-INVOKE                  = ( ("identifier" ,  "=") | λ) ,  "invoke" , ":" ,  string , "(" ,  "args" ,  ")"
+FACTOR                  = Number | String | Identifier | (("+" | "-" | "!"), FACTOR | "(" , BOOL_EXPRESSION, ")" | STDIN) ;
+STDIN                   = "stdin"  , "(" , ")"
 
 BLOCK                   = "{" , STATEMENT ,  "}";
-FUNCTION_BLOCK          = "{" , STATEMENT ,  "return" ,  "set@special_identifier" , "}";
 
 Identifier              = Letter, { Letter | Digit | "_" } ;
 Number                  = Digit, { Digit } ;
