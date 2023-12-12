@@ -37,39 +37,6 @@ class Parser:
             node_assigment.add_child(bool_expression)
 
         return node_assigment
-        # if (tokens.next.type == operators._Type.EQUAL):
-        #
-        #     tokens.select_next()
-        #
-        #     bool_expression = Parser().parse_bool_expression()  # Mudo o assigment
-        #
-        #     node_assigment = Assigment(value=operators._Type.EQUAL)
-        #     node_assigment.add_child(node_identifier)  # Left
-        #     node_assigment.add_child(bool_expression)  # Right
-        #
-        #     return node_assigment
-        #
-        # elif(tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
-        #     tokens.select_next()
-        #
-        #     func_call_node = FuncCall(value = node_identifier.value)
-        #     while(tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
-        #         bool_expression = Parser().parse_bool_expression()
-        #         func_call_node.add_child(bool_expression)
-        #
-        #         if(tokens.next.type == delimiters._Type.COMMAN):
-        #             tokens.select_next()
-        #         else:
-        #             break
-        #
-        #     if(tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
-        #         tokens.select_next()
-        #     else:
-        #         raise InvalidExpression(f"\n [STATEMENT] Expected close parentheses token type | Got {tokens.next}")
-        #
-        #     return func_call_node
-        # else:
-        #     raise InvalidExpression(f"\n [STATEMENT] Expected assigment token type | Got {tokens.next}")
 
     @staticmethod
     def parser_func_call() -> Node:
@@ -127,28 +94,6 @@ class Parser:
 
         elif (tokens.next.type == specials._Type.IDENTIFIER):
             node = Parser().parser_func_call()
-            # node = Identifier(value=tokens.next.value)
-            # tokens.select_next()
-            #
-            # if(tokens.next.type == delimiters._Type.OPEN_PARENTHESES):
-            #     func_call_node = FuncCall(value=node.value)
-            #     tokens.select_next()
-            #
-            #     while(tokens.next.type != delimiters._Type.CLOSE_PARENTHESES):
-            #         bool_expression = Parser().parse_bool_expression()
-            #         func_call_node.add_child(bool_expression)
-            #
-            #         if(tokens.next.type == delimiters._Type.COMMAN):
-            #             tokens.select_next()
-            #         else:
-            #             break
-            #
-            #     if (tokens.next.type == delimiters._Type.CLOSE_PARENTHESES):
-            #         tokens.select_next()
-            #         node = func_call_node
-            #     else:
-            #         raise InvalidExpression(f"\n [FACTOR] Expected close parentheses token type | Got {tokens.next}")
-
             return node
 
         elif (tokens.next.type == operators._Type.PLUS):
@@ -463,28 +408,6 @@ class Parser:
             node_for.add_child(condition)
             node_for.add_child(block)
 
-            # init_state = Parser().parser_assigment()
-            # if(tokens.next.type == delimiters._Type.SEMICOLON):
-            #     tokens.select_next()
-            #     condition = Parser().parse_bool_expression()
-            #
-            #     if (tokens.next.type == delimiters._Type.SEMICOLON):
-            #         tokens.select_next()
-            #         incremet = Parser().parser_assigment()
-            #         block    = Parser().block()
-            #
-            #         node_for = For(value = functions._Type.FOR)
-            #         node_for.add_child(init_state)
-            #         node_for.add_child(condition)
-            #         node_for.add_child(incremet)
-            #         node_for.add_child(block)
-            #
-            #         node = node_for
-            #
-            #     else:
-            #         raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
-            # else:
-            #     raise InvalidToken(f"\n [STATEMENT] Expected semicolon type | Got : {tokens.next.type}")
         elif (tokens.next.type == reserved_word._Type.DECLARE):
             tokens.select_next()
 
