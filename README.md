@@ -9,7 +9,7 @@ A "TwoDots" se inspira em várias outras linguagens amplamente reconhecidas, bus
 Algumas linguagens que foram utilizadas de inspiração : Python , JavaScript , Java , C/C++/C#.
 
 <div align = "center">
-    <img alt="apresentation" src="apresentation.png" width="700rm" />
+    <img alt="apresentation" src="apresentation/apresentation.png" width="700rm" />
 </div>
 
 ## 📌️ Exemplos de uso
